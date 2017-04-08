@@ -457,9 +457,7 @@ static void append_nes(char *input, uint16_t arg) {
 /* This function disassembles the opcode at the PC and outputs it in *output */
 static void disassemble(char *output, uint8_t *buffer, options_t *options, uint16_t *pc) {
     char        opcode_repr[256], hex_dump[256];
-    int         opcode_idx;
     int         len = 0;
-    int         entry = 0;
     uint8_t     byte_operand;
     uint16_t    word_operand = 0;
     uint16_t    current_addr = *pc;
