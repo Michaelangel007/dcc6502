@@ -68,7 +68,6 @@ typedef enum {
 #endif
 
 typedef struct opcode_s {
-    uint8_t           number;            /* Number of the opcode */
     const char       *mnemonic;          /* Index in the name table */
     addressing_mode_e addressing;        /* Addressing mode */
     unsigned int      cycles;            /* Number of cycles */
@@ -88,262 +87,262 @@ typedef struct options_s {
 
 /* Opcode table */
 static opcode_t g_opcode_table[NUMBER_OPCODES] = {
-    {0x00, "BRK", IMPLI, 7, 0                        }, /* 00 BRK */
-    {0x01, "ORA", INDIN, 6, 0                        }, /* 01 ORA */
-    {0x02, "???", 0    , 0, BAD                      }, /* 02     illegal 6502 */
-    {0x03, "???", 0    , 0, BAD                      }, /* 03     illegal 6502 */
-    {0x04, "???", 0    , 0, BAD                      }, /* 04     illegal 6502 */
-    {0x05, "ORA", ZEROP, 3, 0                        }, /* 05 ORA */
-    {0x06, "ASL", ZEROP, 5, 0                        }, /* 06 ASL */
-    {0x07, "???", 0    , 0, BAD                      }, /* 07     illegal 6502 */
-    {0x08, "PHP", IMPLI, 3, 0                        }, /* 08 PHP */
-    {0x09, "ORA", IMMED, 2, 0                        }, /* 09 ORA */
-    {0x0A, "ASL", ACCUM, 2, 0                        }, /* 0A ASL */
-    {0x0B, "???", 0    , 0, BAD                      }, /* 0B     illegal 6502 */
-    {0x0C, "???", 0    , 0, BAD                      }, /* 0C     illegal 6502 */
-    {0x0D, "ORA", ABSOL, 4, 0                        }, /* 0D ORA */
-    {0x0E, "ASL", ABSOL, 6, 0                        }, /* 0E ASL */
-    {0x0F, "???", 0    , 0, BAD                      }, /* 0F     illegal 6502 */
-    {0x10, "BPL", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 10 BPL */
-    {0x11, "ORA", ININD, 5, CYCLE_PAGE               }, /* 11 ORA */
-    {0x12, "???", 0    , 0, BAD                      }, /* 12     illegal 6502 */
-    {0x13, "???", 0    , 0, BAD                      }, /* 13     illegal 6502 */
-    {0x14, "???", 0    , 0, BAD                      }, /* 14     illegal 6502 */
-    {0x15, "ORA", ZEPIX, 4, 0                        }, /* 15 ORA */
-    {0x16, "ASL", ZEPIX, 6, 0                        }, /* 16 ASL */
-    {0x17, "???", 0    , 0, BAD                      }, /* 17     illegal 6502 */
-    {0x18, "CLC", IMPLI, 2, 0                        }, /* 18 CLC */
-    {0x19, "ORA", ABSIY, 4, CYCLE_PAGE               }, /* 19 ORA */
-    {0x1A, "???", 0    , 0, BAD                      }, /* 1A     illegal 6502 */
-    {0x1B, "???", 0    , 0, BAD                      }, /* 1B     illegal 6502 */
-    {0x1C, "???", 0    , 0, BAD                      }, /* 1C     illegal 6502 */
-    {0x1D, "ORA", ABSIX, 4, CYCLE_PAGE               }, /* 1D ORA */
-    {0x1E, "ASL", ABSIX, 7, 0                        }, /* 1E ASL */
-    {0x1F, "???", 0    , 0, BAD                      }, /* 1F     illegal 6502 */
-    {0x20, "JSR", ABSOL, 6, 0                        }, /* 20 JSR */
-    {0x21, "AND", INDIN, 6, 0                        }, /* 21 AND */
-    {0x22, "???", 0    , 0, BAD                      }, /* 22     illegal 6502 */
-    {0x23, "???", 0    , 0, BAD                      }, /* 23     illegal 6502 */
-    {0x24, "BIT", ZEROP, 3, 0                        }, /* 24 BIT */
-    {0x25, "AND", ZEROP, 3, 0                        }, /* 25 AND */
-    {0x26, "ROL", ZEROP, 5, 0                        }, /* 26 ROL */
-    {0x27, "???", 0    , 0, BAD                      }, /* 27     illegal 6502 */
-    {0x28, "PLP", IMPLI, 4, 0                        }, /* 28 PLP */
-    {0x29, "AND", IMMED, 2, 0                        }, /* 29 AND */
-    {0x2A, "ROL", ACCUM, 2, 0                        }, /* 2A ROL */
-    {0x2B, "???", 0    , 0, BAD                      }, /* 2B     illegal 6502 */
-    {0x2C, "BIT", ABSOL, 4, 0                        }, /* 2C BIT */
-    {0x2D, "AND", ABSOL, 4, 0                        }, /* 2D AND */
-    {0x2E, "ROL", ABSOL, 6, 0                        }, /* 2E ROL */
-    {0x2F, "???", 0    , 0, BAD                      }, /* 2F     illegal 6502 */
-    {0x30, "BMI", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 30 BMI */
-    {0x31, "AND", ININD, 5, CYCLE_PAGE               }, /* 31 AND */
-    {0x32, "???", 0    , 0, BAD                      }, /* 32     illegal 6502 */
-    {0x33, "???", 0    , 0, BAD                      }, /* 33     illegal 6502 */
-    {0x34, "???", 0    , 0, BAD                      }, /* 34     illegal 6502 */
-    {0x35, "AND", ZEPIX, 4, 0                        }, /* 35 AND */
-    {0x36, "ROL", ZEPIX, 6, 0                        }, /* 36 ROL */
-    {0x37, "???", 0    , 0, BAD                      }, /* 37     illegal 6502 */
-    {0x38, "SEC", IMPLI, 2, 0                        }, /* 38 SEC */
-    {0x39, "AND", ABSIY, 4, CYCLE_PAGE               }, /* 39 AND */
-    {0x3A, "???", 0    , 0, BAD                      }, /* 3A     illegal 6502 */
-    {0x3B, "???", 0    , 0, BAD                      }, /* 3B     illegal 6502 */
-    {0x3C, "???", 0    , 0, BAD                      }, /* 3C     illegal 6502 */
-    {0x3D, "AND", ABSIX, 4, CYCLE_PAGE               }, /* 3D AND */
-    {0x3E, "ROL", ABSIX, 7, 0                        }, /* 3E ROL */
-    {0x3F, "???", 0    , 0, BAD                      }, /* 3F     illegal 6502 */
-    {0x40, "RTI", IMPLI, 6, 0                        }, /* 40 RTI */
-    {0x41, "EOR", INDIN, 6, 1                        }, /* 41 EOR */
-    {0x42, "???", 0    , 0, BAD                      }, /* 42     illegal 6502 */
-    {0x43, "???", 0    , 0, BAD                      }, /* 43     illegal 6502 */
-    {0x44, "???", 0    , 0, BAD                      }, /* 44     illegal 6502 */
-    {0x45, "EOR", ZEROP, 3, 0                        }, /* 45 EOR */
-    {0x46, "LSR", ZEROP, 5, 0                        }, /* 46 LSR */
-    {0x47, "???", 0    , 0, BAD                      }, /* 47     illegal 6502 */
-    {0x48, "PHA", IMPLI, 3, 0                        }, /* 48 PHA */
-    {0x49, "EOR", IMMED, 2, 0                        }, /* 49 EOR */
-    {0x4A, "LSR", ACCUM, 2, 0                        }, /* 4A LSR */
-    {0x4B, "???", 0    , 0, BAD                      }, /* 4B     illegal 6502 */
-    {0x4C, "JMP", ABSOL, 3, 0                        }, /* 4C JMP */
-    {0x4D, "EOR", ABSOL, 4, 0                        }, /* 4D EOR */
-    {0x4E, "LSR", ABSOL, 6, 0                        }, /* 4E LSR */
-    {0x4F, "???", 0    , 0, BAD                      }, /* 4F     illegal 6502 */
-    {0x50, "BVC", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 50 BVC */
-    {0x51, "EOR", ININD, 5, CYCLE_PAGE               }, /* 51 EOR */
-    {0x52, "???", 0    , 0, BAD                      }, /* 52     illegal 6502 */
-    {0x53, "???", 0    , 0, BAD                      }, /* 53     illegal 6502 */
-    {0x54, "???", 0    , 0, BAD                      }, /* 54     illegal 6502 */
-    {0x55, "EOR", ZEPIX, 4, 0                        }, /* 55 EOR */
-    {0x56, "LSR", ZEPIX, 6, 0                        }, /* 56 LSR */
-    {0x57, "???", 0    , 0, BAD                      }, /* 57     illegal 6502 */
-    {0x58, "CLI", IMPLI, 2, 0                        }, /* 58 CLI */
-    {0x59, "EOR", ABSIY, 4, CYCLE_PAGE               }, /* 59 EOR */
-    {0x5A, "???", 0    , 0, BAD                      }, /* 5A     illegal 6502 */
-    {0x5B, "???", 0    , 0, BAD                      }, /* 5B     illegal 6502 */
-    {0x5C, "???", 0    , 0, BAD                      }, /* 5C     illegal 6502 */
-    {0x5D, "EOR", ABSIX, 4, CYCLE_PAGE               }, /* 5D EOR */
-    {0x5E, "LSR", ABSIX, 7, 0                        }, /* 5E LSR */
-    {0x5F, "???", 0    , 0, BAD                      }, /* 5F     illegal 6502 */
-    {0x60, "RTS", IMPLI, 6, 0                        }, /* 60 RTS */
-    {0x61, "ADC", INDIN, 6, 0                        }, /* 61 ADC */
-    {0x62, "???", 0    , 0, BAD                      }, /* 62     illegal 6502 */
-    {0x63, "???", 0    , 0, BAD                      }, /* 63     illegal 6502 */
-    {0x64, "???", 0    , 0, BAD                      }, /* 64     illegal 6502 */
-    {0x65, "ADC", ZEROP, 3, 0                        }, /* 65 ADC */
-    {0x66, "ROR", ZEROP, 5, 0                        }, /* 66 ROR */
-    {0x67, "???", 0    , 0, BAD                      }, /* 67     illegal 6502 */
-    {0x68, "PLA", IMPLI, 4, 0                        }, /* 68 PLA */
-    {0x69, "ADC", IMMED, 2, 0                        }, /* 69 ADC */
-    {0x6A, "ROR", ACCUM, 2, 0                        }, /* 6A ROR */
-    {0x6B, "???", 0    , 0, BAD                      }, /* 6B     illegal 6502 */
-    {0x6C, "JMP", INDIA, 5, 0                        }, /* 6C JMP */
-    {0x6D, "ADC", ABSOL, 4, 0                        }, /* 6D ADC */
-    {0x6E, "ROR", ABSOL, 6, 0                        }, /* 6E ROR */
-    {0x6F, "???", 0    , 0, BAD                      }, /* 6F     illegal 6502 */
-    {0x70, "BVS", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 70 BVS */
-    {0x71, "ADC", ININD, 5, CYCLE_PAGE               }, /* 71 ADC */
-    {0x72, "???", 0    , 0, BAD                      }, /* 72     illegal 6502 */
-    {0x73, "???", 0    , 0, BAD                      }, /* 73     illegal 6502 */
-    {0x74, "???", 0    , 0, BAD                      }, /* 74     illegal 6502 */
-    {0x75, "ADC", ZEPIX, 4, 0                        }, /* 75 ADC */
-    {0x76, "ROR", ZEPIX, 6, 0                        }, /* 76 ROR */
-    {0x77, "???", 0    , 0, BAD                      }, /* 77     illegal 6502 */
-    {0x78, "SEI", IMPLI, 2, 0                        }, /* 78 SEI */
-    {0x79, "ADC", ABSIY, 4, CYCLE_PAGE               }, /* 79 ADC */
-    {0x7A, "???", 0    , 0, BAD                      }, /* 7A     illegal 6502 */
-    {0x7B, "???", 0    , 0, BAD                      }, /* 7B     illegal 6502 */
-    {0x7C, "???", 0    , 0, BAD                      }, /* 7C     illegal 6502 */
-    {0x7D, "ADC", ABSIX, 4, CYCLE_PAGE               }, /* 7D ADC */
-    {0x7E, "ROR", ABSIX, 7, 0                        }, /* 7E ROR */
-    {0x7F, "???", 0    , 0, BAD                      }, /* 7F     illegal 6502 */
-    {0x80, "???", 0    , 0, BAD                      }, /* 80     illegal 6502 */
-    {0x81, "STA", INDIN, 6, 0                        }, /* 81 STA */
-    {0x82, "???", 0    , 0, BAD                      }, /* 82     illegal 6502 */
-    {0x83, "???", 0    , 0, BAD                      }, /* 83     illegal 6502 */
-    {0x84, "STY", ZEROP, 3, 0                        }, /* 84 STY */
-    {0x85, "STA", ZEROP, 3, 0                        }, /* 85 STA */
-    {0x86, "STX", ZEROP, 3, 0                        }, /* 86 STX */
-    {0x87, "???", 0    , 0, BAD                      }, /* 87     illegal 6502 */
-    {0x88, "DEY", IMPLI, 2, 0                        }, /* 88 DEY */
-    {0x89, "???", 0    , 0, BAD                      }, /* 89     illegal 6502 */
-    {0x8A, "TXA", IMPLI, 2, 0                        }, /* 8A TXA */
-    {0x8B, "???", 0    , 0, BAD                      }, /* 8B     illegal 6502 */
-    {0x8C, "STY", ABSOL, 4, 0                        }, /* 9C STY */
-    {0x8D, "STA", ABSOL, 4, 0                        }, /* 8D STA */
-    {0x8E, "STX", ABSOL, 4, 0                        }, /* 8E STX */
-    {0x8F, "???", 0    , 0, BAD                      }, /* 8F     illegal 6502 */
-    {0x90, "BCC", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 90 BCC */
-    {0x91, "STA", ININD, 5, CYCLE_PAGE               }, /* 91 STA */
-    {0x92, "???", 0    , 0, BAD                      }, /* 92     illegal 6502 */
-    {0x93, "???", 0    , 0, BAD                      }, /* 93     illegal 6502 */
-    {0x94, "STY", ZEPIX, 4, 0                        }, /* 94 STY */
-    {0x95, "STA", ZEPIX, 4, 0                        }, /* 95 STA */
-    {0x96, "STX", ZEPIY, 4, 0                        }, /* 96 STX */
-    {0x97, "???", 0    , 0, BAD                      }, /* 97     illegal 6502 */
-    {0x98, "TYA", IMPLI, 2, 0                        }, /* 98 TYA */
-    {0x99, "STA", ABSIY, 4, CYCLE_PAGE               }, /* 99 STA */
-    {0x9A, "TXS", IMPLI, 2, 0                        }, /* 9A TXS */
-    {0x9B, "???", 0    , 0, BAD                      }, /* 9B     illegal 6502 */
-    {0x9C, "???", 0    , 0, BAD                      }, /* 9C     illegal 6502 */
-    {0x9D, "STA", ABSIX, 4, CYCLE_PAGE               }, /* 9D STA */
-    {0x9E, "???", 0    , 0, BAD                      }, /* 9E     illegal 6502 */
-    {0x9F, "???", 0    , 0, BAD                      }, /* 9F     illegal 6502 */
-    {0xA0, "LDY", IMMED, 2, 0                        }, /* A0 LDY */
-    {0xA1, "LDA", INDIN, 6, 0                        }, /* A1 LDA */
-    {0xA2, "LDX", IMMED, 2, 0                        }, /* A2 LDX */
-    {0xA3, "???", 0    , 0, BAD                      }, /* A3     illegal 6502 */
-    {0xA4, "LDY", ZEROP, 3, 0                        }, /* A4 LDY */
-    {0xA5, "LDA", ZEROP, 3, 0                        }, /* A5 LDA */
-    {0xA6, "LDX", ZEROP, 3, 0                        }, /* A6 LDX */
-    {0xA7, "???", 0    , 0, BAD                      }, /* A7     illegal 6502 */
-    {0xA8, "TAY", IMPLI, 2, 0                        }, /* A8 TAY */
-    {0xA9, "LDA", IMMED, 2, 0                        }, /* A9 LDA */
-    {0xAA, "TAX", IMPLI, 2, 0                        }, /* AA TAX */
-    {0xAB, "???", 0    , 0, BAD                      }, /* AB     illegal 6502 */
-    {0xAC, "LDY", ABSOL, 4, 0                        }, /* AC LDY */
-    {0xAD, "LDA", ABSOL, 4, 0                        }, /* AD LDA */
-    {0xAE, "LDX", ABSOL, 4, 0                        }, /* AE LDX */
-    {0xAF, "???", 0    , 0, BAD                      }, /* AF     illegal 6502 */
-    {0xB0, "BCS", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* B0 BCS */
-    {0xB1, "LDA", ININD, 5, CYCLE_PAGE               }, /* B1 LDA */
-    {0xB2, "???", 0    , 0, BAD                      }, /* B2     illegal 6502 */
-    {0xB3, "???", 0    , 0, BAD                      }, /* B3     illegal 6502 */
-    {0xB4, "LDY", ZEPIX, 4, 0                        }, /* B4 LDY */
-    {0xB5, "LDA", ZEPIX, 4, 0                        }, /* B5 LDA */
-    {0xB6, "LDX", ZEPIY, 4, 0                        }, /* B6 LDX */
-    {0xB7, "???", 0    , 0, BAD                      }, /* B7     illegal 6502 */
-    {0xB8, "CLV", IMPLI, 2, 0                        }, /* B8 CLV */
-    {0xB9, "LDA", ABSIY, 4, CYCLE_PAGE               }, /* B9 LDA */
-    {0xBA, "TSX", IMPLI, 2, 0                        }, /* BA TSX */
-    {0xBB, "???", 0    , 0, BAD                      }, /* BB     illegal 6502 */
-    {0xBC, "LDY", ABSIX, 4, CYCLE_PAGE               }, /* BC LDY */
-    {0xBD, "LDA", ABSIX, 4, CYCLE_PAGE               }, /* BD LDA */
-    {0xBE, "LDX", ABSIY, 4, CYCLE_PAGE               }, /* BE LDX */
-    {0xBF, "???", 0    , 0, BAD                      }, /* BF     illegal 6502 */
-    {0xC0, "CPY", IMMED, 2, 0                        }, /* C0 CPY */
-    {0xC1, "CMP", INDIN, 6, 0                        }, /* C1 CMP */
-    {0xC2, "???", 0    , 0, BAD                      }, /* C2     illegal 6502 */
-    {0xC3, "???", 0    , 0, BAD                      }, /* C3     illegal 6502 */
-    {0xC4, "CPY", ZEROP, 3, 0                        }, /* C4 CPY */
-    {0xC5, "CMP", ZEROP, 3, 0                        }, /* C5 CMP */
-    {0xC6, "DEC", ZEROP, 5, 0                        }, /* C6 DEC */
-    {0xC7, "???", 0    , 0, BAD                      }, /* C7     illegal 6502 */
-    {0xC8, "INY", IMPLI, 2, 0                        }, /* C8 INY */
-    {0xC9, "CMP", IMMED, 2, 0                        }, /* C9 CMP */
-    {0xCA, "DEX", IMPLI, 2, 0                        }, /* CA DEX */
-    {0xCB, "???", 0    , 0, BAD                      }, /* CB     illegal 6502 */
-    {0xCC, "CPY", ABSOL, 4, 0                        }, /* CC CPY */
-    {0xCD, "CMP", ABSOL, 4, 0                        }, /* CD CMP */
-    {0xCE, "DEC", ABSOL, 6, 0                        }, /* CE DEC */
-    {0xCF, "???", 0    , 0, BAD                      }, /* CF     illegal 6502 */
-    {0xD0, "BNE", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* D0 BNE */
-    {0xD1, "CMP", ININD, 5, CYCLE_PAGE               }, /* D1 CMP */
-    {0xD2, "???", 0    , 0, BAD                      }, /* D2     illegal 6502 */
-    {0xD3, "???", 0    , 0, BAD                      }, /* D3     illegal 6502 */
-    {0x04, "???", 0    , 0, BAD                      }, /* D4     illegal 6502 */
-    {0xD5, "CMP", ZEPIX, 4, 0                        }, /* D5 CMP */
-    {0xD6, "DEC", ZEPIX, 6, 0                        }, /* D6 DEC */
-    {0xD7, "???", 0    , 0, BAD                      }, /* D7     illegal 6502 */
-    {0xD8, "CLD", IMPLI, 2, 0                        }, /* D8 CLD */
-    {0xD9, "CMP", ABSIY, 4, CYCLE_PAGE               }, /* D9 CMP */
-    {0xDA, "???", 0    , 0, BAD                      }, /* DA     illegal 6502 */
-    {0xDB, "???", 0    , 0, BAD                      }, /* DB     illegal 6502 */
-    {0xDC, "???", 0    , 0, BAD                      }, /* DC     illegal 6502 */
-    {0xDD, "CMP", ABSIX, 4, CYCLE_PAGE               }, /* DD CMP */
-    {0xDE, "DEC", ABSIX, 7, 0                        }, /* DE DEC */
-    {0xDF, "???", 0    , 0, BAD                      }, /* DF     illegal 6502 */
-    {0xE0, "CPX", IMMED, 2, 0                        }, /* E0 CPX */
-    {0xE1, "SBC", INDIN, 6, 0                        }, /* E1 SBC */
-    {0xE2, "???", 0    , 0, BAD                      }, /* E2     illegal 6502 */
-    {0xE3, "???", 0    , 0, BAD                      }, /* E3     illegal 6502 */
-    {0xE4, "CPX", ZEROP, 3, 0                        }, /* E4 CPX */
-    {0xE5, "SBC", ZEROP, 3, 0                        }, /* E5 SBC */
-    {0xE6, "INC", ZEROP, 5, 0                        }, /* E6 INC */
-    {0xE7, "???", 0    , 0, BAD                      }, /* E7     illegal 6502 */
-    {0xE8, "INX", IMPLI, 2, 0                        }, /* E8 INX */
-    {0xE9, "SBC", IMMED, 2, 0                        }, /* E9 SBC */
-    {0xEA, "NOP", IMPLI, 2, 0                        }, /* EA NOP */
-    {0xEB, "???", 0    , 0, BAD                      }, /* EB     illegal 6502 */
-    {0xEC, "CPX", ABSOL, 4, 0                        }, /* EC CPX */
-    {0xED, "SBC", ABSOL, 4, 0                        }, /* ED SBC */
-    {0xEE, "INC", ABSOL, 6, 0                        }, /* EE INC */
-    {0xEF, "???", 0    , 0, BAD                      }, /* EF     illegal 6502 */
-    {0xF0, "BEQ", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* F0 BEQ */
-    {0xF1, "SBC", ININD, 5, CYCLE_PAGE               }, /* F1 SBC */
-    {0xF2, "???", 0    , 0, BAD                      }, /* F2     illegal 6502 */
-    {0xF3, "???", 0    , 0, BAD                      }, /* F3     illegal 6502 */
-    {0xF4, "???", 0    , 0, BAD                      }, /* F4     illegal 6502 */
-    {0xF5, "SBC", ZEPIX, 4, 0                        }, /* F5 SBC */
-    {0xF6, "INC", ZEPIX, 6, 0                        }, /* F6 INC */
-    {0xF7, "???", 0    , 0, BAD                      }, /* F7     illegal 6502 */
-    {0xF8, "SED", IMPLI, 2, 0                        }, /* F8 SED */
-    {0xF9, "SBC", ABSIY, 4, CYCLE_PAGE               }, /* F9 SBC */
-    {0xFA, "???", 0    , 0, BAD                      }, /* FA     illegal 6502 */
-    {0xFB, "???", 0    , 0, BAD                      }, /* FB     illegal 6502 */
-    {0xFC, "???", 0    , 0, BAD                      }, /* FC     illegal 6502 */
-    {0xFD, "SBC", ABSIX, 4, CYCLE_PAGE               }, /* FD SBC */
-    {0xFE, "INC", ABSIX, 7, 0                        }, /* FE INC */
-    {0xFF, "???", 0    , 0, BAD                      }  /* FF     illegal 6502 */
+    {"BRK", IMPLI, 7, 0                        }, /* 00 BRK */
+    {"ORA", INDIN, 6, 0                        }, /* 01 ORA */
+    {"???", 0    , 0, BAD                      }, /* 02     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 03     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 04     illegal 6502 */
+    {"ORA", ZEROP, 3, 0                        }, /* 05 ORA */
+    {"ASL", ZEROP, 5, 0                        }, /* 06 ASL */
+    {"???", 0    , 0, BAD                      }, /* 07     illegal 6502 */
+    {"PHP", IMPLI, 3, 0                        }, /* 08 PHP */
+    {"ORA", IMMED, 2, 0                        }, /* 09 ORA */
+    {"ASL", ACCUM, 2, 0                        }, /* 0A ASL */
+    {"???", 0    , 0, BAD                      }, /* 0B     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 0C     illegal 6502 */
+    {"ORA", ABSOL, 4, 0                        }, /* 0D ORA */
+    {"ASL", ABSOL, 6, 0                        }, /* 0E ASL */
+    {"???", 0    , 0, BAD                      }, /* 0F     illegal 6502 */
+    {"BPL", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 10 BPL */
+    {"ORA", ININD, 5, CYCLE_PAGE               }, /* 11 ORA */
+    {"???", 0    , 0, BAD                      }, /* 12     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 13     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 14     illegal 6502 */
+    {"ORA", ZEPIX, 4, 0                        }, /* 15 ORA */
+    {"ASL", ZEPIX, 6, 0                        }, /* 16 ASL */
+    {"???", 0    , 0, BAD                      }, /* 17     illegal 6502 */
+    {"CLC", IMPLI, 2, 0                        }, /* 18 CLC */
+    {"ORA", ABSIY, 4, CYCLE_PAGE               }, /* 19 ORA */
+    {"???", 0    , 0, BAD                      }, /* 1A     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 1B     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 1C     illegal 6502 */
+    {"ORA", ABSIX, 4, CYCLE_PAGE               }, /* 1D ORA */
+    {"ASL", ABSIX, 7, 0                        }, /* 1E ASL */
+    {"???", 0    , 0, BAD                      }, /* 1F     illegal 6502 */
+    {"JSR", ABSOL, 6, 0                        }, /* 20 JSR */
+    {"AND", INDIN, 6, 0                        }, /* 21 AND */
+    {"???", 0    , 0, BAD                      }, /* 22     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 23     illegal 6502 */
+    {"BIT", ZEROP, 3, 0                        }, /* 24 BIT */
+    {"AND", ZEROP, 3, 0                        }, /* 25 AND */
+    {"ROL", ZEROP, 5, 0                        }, /* 26 ROL */
+    {"???", 0    , 0, BAD                      }, /* 27     illegal 6502 */
+    {"PLP", IMPLI, 4, 0                        }, /* 28 PLP */
+    {"AND", IMMED, 2, 0                        }, /* 29 AND */
+    {"ROL", ACCUM, 2, 0                        }, /* 2A ROL */
+    {"???", 0    , 0, BAD                      }, /* 2B     illegal 6502 */
+    {"BIT", ABSOL, 4, 0                        }, /* 2C BIT */
+    {"AND", ABSOL, 4, 0                        }, /* 2D AND */
+    {"ROL", ABSOL, 6, 0                        }, /* 2E ROL */
+    {"???", 0    , 0, BAD                      }, /* 2F     illegal 6502 */
+    {"BMI", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 30 BMI */
+    {"AND", ININD, 5, CYCLE_PAGE               }, /* 31 AND */
+    {"???", 0    , 0, BAD                      }, /* 32     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 33     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 34     illegal 6502 */
+    {"AND", ZEPIX, 4, 0                        }, /* 35 AND */
+    {"ROL", ZEPIX, 6, 0                        }, /* 36 ROL */
+    {"???", 0    , 0, BAD                      }, /* 37     illegal 6502 */
+    {"SEC", IMPLI, 2, 0                        }, /* 38 SEC */
+    {"AND", ABSIY, 4, CYCLE_PAGE               }, /* 39 AND */
+    {"???", 0    , 0, BAD                      }, /* 3A     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 3B     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 3C     illegal 6502 */
+    {"AND", ABSIX, 4, CYCLE_PAGE               }, /* 3D AND */
+    {"ROL", ABSIX, 7, 0                        }, /* 3E ROL */
+    {"???", 0    , 0, BAD                      }, /* 3F     illegal 6502 */
+    {"RTI", IMPLI, 6, 0                        }, /* 40 RTI */
+    {"EOR", INDIN, 6, 1                        }, /* 41 EOR */
+    {"???", 0    , 0, BAD                      }, /* 42     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 43     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 44     illegal 6502 */
+    {"EOR", ZEROP, 3, 0                        }, /* 45 EOR */
+    {"LSR", ZEROP, 5, 0                        }, /* 46 LSR */
+    {"???", 0    , 0, BAD                      }, /* 47     illegal 6502 */
+    {"PHA", IMPLI, 3, 0                        }, /* 48 PHA */
+    {"EOR", IMMED, 2, 0                        }, /* 49 EOR */
+    {"LSR", ACCUM, 2, 0                        }, /* 4A LSR */
+    {"???", 0    , 0, BAD                      }, /* 4B     illegal 6502 */
+    {"JMP", ABSOL, 3, 0                        }, /* 4C JMP */
+    {"EOR", ABSOL, 4, 0                        }, /* 4D EOR */
+    {"LSR", ABSOL, 6, 0                        }, /* 4E LSR */
+    {"???", 0    , 0, BAD                      }, /* 4F     illegal 6502 */
+    {"BVC", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 50 BVC */
+    {"EOR", ININD, 5, CYCLE_PAGE               }, /* 51 EOR */
+    {"???", 0    , 0, BAD                      }, /* 52     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 53     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 54     illegal 6502 */
+    {"EOR", ZEPIX, 4, 0                        }, /* 55 EOR */
+    {"LSR", ZEPIX, 6, 0                        }, /* 56 LSR */
+    {"???", 0    , 0, BAD                      }, /* 57     illegal 6502 */
+    {"CLI", IMPLI, 2, 0                        }, /* 58 CLI */
+    {"EOR", ABSIY, 4, CYCLE_PAGE               }, /* 59 EOR */
+    {"???", 0    , 0, BAD                      }, /* 5A     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 5B     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 5C     illegal 6502 */
+    {"EOR", ABSIX, 4, CYCLE_PAGE               }, /* 5D EOR */
+    {"LSR", ABSIX, 7, 0                        }, /* 5E LSR */
+    {"???", 0    , 0, BAD                      }, /* 5F     illegal 6502 */
+    {"RTS", IMPLI, 6, 0                        }, /* 60 RTS */
+    {"ADC", INDIN, 6, 0                        }, /* 61 ADC */
+    {"???", 0    , 0, BAD                      }, /* 62     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 63     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 64     illegal 6502 */
+    {"ADC", ZEROP, 3, 0                        }, /* 65 ADC */
+    {"ROR", ZEROP, 5, 0                        }, /* 66 ROR */
+    {"???", 0    , 0, BAD                      }, /* 67     illegal 6502 */
+    {"PLA", IMPLI, 4, 0                        }, /* 68 PLA */
+    {"ADC", IMMED, 2, 0                        }, /* 69 ADC */
+    {"ROR", ACCUM, 2, 0                        }, /* 6A ROR */
+    {"???", 0    , 0, BAD                      }, /* 6B     illegal 6502 */
+    {"JMP", INDIA, 5, 0                        }, /* 6C JMP */
+    {"ADC", ABSOL, 4, 0                        }, /* 6D ADC */
+    {"ROR", ABSOL, 6, 0                        }, /* 6E ROR */
+    {"???", 0    , 0, BAD                      }, /* 6F     illegal 6502 */
+    {"BVS", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 70 BVS */
+    {"ADC", ININD, 5, CYCLE_PAGE               }, /* 71 ADC */
+    {"???", 0    , 0, BAD                      }, /* 72     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 73     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 74     illegal 6502 */
+    {"ADC", ZEPIX, 4, 0                        }, /* 75 ADC */
+    {"ROR", ZEPIX, 6, 0                        }, /* 76 ROR */
+    {"???", 0    , 0, BAD                      }, /* 77     illegal 6502 */
+    {"SEI", IMPLI, 2, 0                        }, /* 78 SEI */
+    {"ADC", ABSIY, 4, CYCLE_PAGE               }, /* 79 ADC */
+    {"???", 0    , 0, BAD                      }, /* 7A     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 7B     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 7C     illegal 6502 */
+    {"ADC", ABSIX, 4, CYCLE_PAGE               }, /* 7D ADC */
+    {"ROR", ABSIX, 7, 0                        }, /* 7E ROR */
+    {"???", 0    , 0, BAD                      }, /* 7F     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 80     illegal 6502 */
+    {"STA", INDIN, 6, 0                        }, /* 81 STA */
+    {"???", 0    , 0, BAD                      }, /* 82     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 83     illegal 6502 */
+    {"STY", ZEROP, 3, 0                        }, /* 84 STY */
+    {"STA", ZEROP, 3, 0                        }, /* 85 STA */
+    {"STX", ZEROP, 3, 0                        }, /* 86 STX */
+    {"???", 0    , 0, BAD                      }, /* 87     illegal 6502 */
+    {"DEY", IMPLI, 2, 0                        }, /* 88 DEY */
+    {"???", 0    , 0, BAD                      }, /* 89     illegal 6502 */
+    {"TXA", IMPLI, 2, 0                        }, /* 8A TXA */
+    {"???", 0    , 0, BAD                      }, /* 8B     illegal 6502 */
+    {"STY", ABSOL, 4, 0                        }, /* 9C STY */
+    {"STA", ABSOL, 4, 0                        }, /* 8D STA */
+    {"STX", ABSOL, 4, 0                        }, /* 8E STX */
+    {"???", 0    , 0, BAD                      }, /* 8F     illegal 6502 */
+    {"BCC", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 90 BCC */
+    {"STA", ININD, 5, CYCLE_PAGE               }, /* 91 STA */
+    {"???", 0    , 0, BAD                      }, /* 92     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 93     illegal 6502 */
+    {"STY", ZEPIX, 4, 0                        }, /* 94 STY */
+    {"STA", ZEPIX, 4, 0                        }, /* 95 STA */
+    {"STX", ZEPIY, 4, 0                        }, /* 96 STX */
+    {"???", 0    , 0, BAD                      }, /* 97     illegal 6502 */
+    {"TYA", IMPLI, 2, 0                        }, /* 98 TYA */
+    {"STA", ABSIY, 4, CYCLE_PAGE               }, /* 99 STA */
+    {"TXS", IMPLI, 2, 0                        }, /* 9A TXS */
+    {"???", 0    , 0, BAD                      }, /* 9B     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 9C     illegal 6502 */
+    {"STA", ABSIX, 4, CYCLE_PAGE               }, /* 9D STA */
+    {"???", 0    , 0, BAD                      }, /* 9E     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* 9F     illegal 6502 */
+    {"LDY", IMMED, 2, 0                        }, /* A0 LDY */
+    {"LDA", INDIN, 6, 0                        }, /* A1 LDA */
+    {"LDX", IMMED, 2, 0                        }, /* A2 LDX */
+    {"???", 0    , 0, BAD                      }, /* A3     illegal 6502 */
+    {"LDY", ZEROP, 3, 0                        }, /* A4 LDY */
+    {"LDA", ZEROP, 3, 0                        }, /* A5 LDA */
+    {"LDX", ZEROP, 3, 0                        }, /* A6 LDX */
+    {"???", 0    , 0, BAD                      }, /* A7     illegal 6502 */
+    {"TAY", IMPLI, 2, 0                        }, /* A8 TAY */
+    {"LDA", IMMED, 2, 0                        }, /* A9 LDA */
+    {"TAX", IMPLI, 2, 0                        }, /* AA TAX */
+    {"???", 0    , 0, BAD                      }, /* AB     illegal 6502 */
+    {"LDY", ABSOL, 4, 0                        }, /* AC LDY */
+    {"LDA", ABSOL, 4, 0                        }, /* AD LDA */
+    {"LDX", ABSOL, 4, 0                        }, /* AE LDX */
+    {"???", 0    , 0, BAD                      }, /* AF     illegal 6502 */
+    {"BCS", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* B0 BCS */
+    {"LDA", ININD, 5, CYCLE_PAGE               }, /* B1 LDA */
+    {"???", 0    , 0, BAD                      }, /* B2     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* B3     illegal 6502 */
+    {"LDY", ZEPIX, 4, 0                        }, /* B4 LDY */
+    {"LDA", ZEPIX, 4, 0                        }, /* B5 LDA */
+    {"LDX", ZEPIY, 4, 0                        }, /* B6 LDX */
+    {"???", 0    , 0, BAD                      }, /* B7     illegal 6502 */
+    {"CLV", IMPLI, 2, 0                        }, /* B8 CLV */
+    {"LDA", ABSIY, 4, CYCLE_PAGE               }, /* B9 LDA */
+    {"TSX", IMPLI, 2, 0                        }, /* BA TSX */
+    {"???", 0    , 0, BAD                      }, /* BB     illegal 6502 */
+    {"LDY", ABSIX, 4, CYCLE_PAGE               }, /* BC LDY */
+    {"LDA", ABSIX, 4, CYCLE_PAGE               }, /* BD LDA */
+    {"LDX", ABSIY, 4, CYCLE_PAGE               }, /* BE LDX */
+    {"???", 0    , 0, BAD                      }, /* BF     illegal 6502 */
+    {"CPY", IMMED, 2, 0                        }, /* C0 CPY */
+    {"CMP", INDIN, 6, 0                        }, /* C1 CMP */
+    {"???", 0    , 0, BAD                      }, /* C2     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* C3     illegal 6502 */
+    {"CPY", ZEROP, 3, 0                        }, /* C4 CPY */
+    {"CMP", ZEROP, 3, 0                        }, /* C5 CMP */
+    {"DEC", ZEROP, 5, 0                        }, /* C6 DEC */
+    {"???", 0    , 0, BAD                      }, /* C7     illegal 6502 */
+    {"INY", IMPLI, 2, 0                        }, /* C8 INY */
+    {"CMP", IMMED, 2, 0                        }, /* C9 CMP */
+    {"DEX", IMPLI, 2, 0                        }, /* CA DEX */
+    {"???", 0    , 0, BAD                      }, /* CB     illegal 6502 */
+    {"CPY", ABSOL, 4, 0                        }, /* CC CPY */
+    {"CMP", ABSOL, 4, 0                        }, /* CD CMP */
+    {"DEC", ABSOL, 6, 0                        }, /* CE DEC */
+    {"???", 0    , 0, BAD                      }, /* CF     illegal 6502 */
+    {"BNE", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* D0 BNE */
+    {"CMP", ININD, 5, CYCLE_PAGE               }, /* D1 CMP */
+    {"???", 0    , 0, BAD                      }, /* D2     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* D3     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* D4     illegal 6502 */
+    {"CMP", ZEPIX, 4, 0                        }, /* D5 CMP */
+    {"DEC", ZEPIX, 6, 0                        }, /* D6 DEC */
+    {"???", 0    , 0, BAD                      }, /* D7     illegal 6502 */
+    {"CLD", IMPLI, 2, 0                        }, /* D8 CLD */
+    {"CMP", ABSIY, 4, CYCLE_PAGE               }, /* D9 CMP */
+    {"???", 0    , 0, BAD                      }, /* DA     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* DB     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* DC     illegal 6502 */
+    {"CMP", ABSIX, 4, CYCLE_PAGE               }, /* DD CMP */
+    {"DEC", ABSIX, 7, 0                        }, /* DE DEC */
+    {"???", 0    , 0, BAD                      }, /* DF     illegal 6502 */
+    {"CPX", IMMED, 2, 0                        }, /* E0 CPX */
+    {"SBC", INDIN, 6, 0                        }, /* E1 SBC */
+    {"???", 0    , 0, BAD                      }, /* E2     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* E3     illegal 6502 */
+    {"CPX", ZEROP, 3, 0                        }, /* E4 CPX */
+    {"SBC", ZEROP, 3, 0                        }, /* E5 SBC */
+    {"INC", ZEROP, 5, 0                        }, /* E6 INC */
+    {"???", 0    , 0, BAD                      }, /* E7     illegal 6502 */
+    {"INX", IMPLI, 2, 0                        }, /* E8 INX */
+    {"SBC", IMMED, 2, 0                        }, /* E9 SBC */
+    {"NOP", IMPLI, 2, 0                        }, /* EA NOP */
+    {"???", 0    , 0, BAD                      }, /* EB     illegal 6502 */
+    {"CPX", ABSOL, 4, 0                        }, /* EC CPX */
+    {"SBC", ABSOL, 4, 0                        }, /* ED SBC */
+    {"INC", ABSOL, 6, 0                        }, /* EE INC */
+    {"???", 0    , 0, BAD                      }, /* EF     illegal 6502 */
+    {"BEQ", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* F0 BEQ */
+    {"SBC", ININD, 5, CYCLE_PAGE               }, /* F1 SBC */
+    {"???", 0    , 0, BAD                      }, /* F2     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* F3     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* F4     illegal 6502 */
+    {"SBC", ZEPIX, 4, 0                        }, /* F5 SBC */
+    {"INC", ZEPIX, 6, 0                        }, /* F6 INC */
+    {"???", 0    , 0, BAD                      }, /* F7     illegal 6502 */
+    {"SED", IMPLI, 2, 0                        }, /* F8 SED */
+    {"SBC", ABSIY, 4, CYCLE_PAGE               }, /* F9 SBC */
+    {"???", 0    , 0, BAD                      }, /* FA     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* FB     illegal 6502 */
+    {"???", 0    , 0, BAD                      }, /* FC     illegal 6502 */
+    {"SBC", ABSIX, 4, CYCLE_PAGE               }, /* FD SBC */
+    {"INC", ABSIX, 7, 0                        }, /* FE INC */
+    {"???", 0    , 0, BAD                      }  /* FF     illegal 6502 */
 };
 
 #define DUMP_FORMAT (options->hex_output ? "%-16s%-16s;" : "%-8s%-16s;")
