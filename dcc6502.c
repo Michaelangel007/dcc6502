@@ -415,7 +415,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
         }
     }
 
-#define HEXDUMP_APPLE_0() if (options->apple2_output) { sprintf(hex_dump, "%04X:        "      , current_addr                                                         ); } else
+#define HEXDUMP_APPLE_0() if (options->apple2_output) { sprintf(hex_dump, "%04X:"              , current_addr                                                         ); } else
 #define HEXDUMP_APPLE_1() if (options->apple2_output) { sprintf(hex_dump, "%04X:%02X        "  , current_addr, opcode                                                 ); } else
 #define HEXDUMP_APPLE_2() if (options->apple2_output) { sprintf(hex_dump, "%04X:%02X %02X    " , current_addr, opcode, byte_operand                                   ); } else
 #define HEXDUMP_APPLE_3() if (options->apple2_output) { sprintf(hex_dump, "%04X:%02X %02X %02X", current_addr, opcode, LOW_PART(word_operand), HIGH_PART(word_operand)); } else
