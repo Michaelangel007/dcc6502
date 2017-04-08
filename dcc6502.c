@@ -499,6 +499,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
 
             sprintf(opcode_repr, "%s ($%02X%02X)", mnemonic, HIGH_PART(word_operand), LOW_PART(word_operand));
             if (options->hex_output) {
+                HEXDUMP_APPLE_3();
                 sprintf(hex_dump, "$%04X> %02X %02X%02X:", current_addr, opcode, LOW_PART(word_operand), HIGH_PART(word_operand));
             }
 
