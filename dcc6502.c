@@ -443,6 +443,15 @@ static void append_nes(char *input, uint16_t arg) {
 #define LOW_PART(val) ((val) & 0xFFu)
 #define LOAD_WORD(buffer, current_pc) ((uint16_t)buffer[(current_pc) + 1] | (((uint16_t)buffer[(current_pc) + 2]) << 8))
 
+#define HEXDUMP_APPLE_0() if (options->apple2_output) { sprintf(hex_dump, "%04X:"              , current_addr                                                         ); } else
+#define HEXDUMP_APPLE_1() if (options->apple2_output) { sprintf(hex_dump, "%04X:%02X        "  , current_addr, opcode                                                 ); } else
+#define HEXDUMP_APPLE_2() if (options->apple2_output) { sprintf(hex_dump, "%04X:%02X %02X    " , current_addr, opcode, byte_operand                                   ); } else
+#define HEXDUMP_APPLE_3() if (options->apple2_output) { sprintf(hex_dump, "%04X:%02X %02X %02X", current_addr, opcode, LOW_PART(word_operand), HIGH_PART(word_operand)); } else
+
+#define HEXDUMP_NES_1() sprintf(hex_dump, "$%04X> %02X:"         , current_addr, opcode);
+#define HEXDUMP_NES_2() sprintf(hex_dump, "$%04X> %02X %02X:"    , current_addr, opcode, byte_operand);
+#define HEXDUMP_NES_3() sprintf(hex_dump, "$%04X> %02X %02X%02X:", current_addr, opcode, LOW_PART(word_operand), HIGH_PART(word_operand));
+
 /* This function disassembles the opcode at the PC and outputs it in *output */
 static void disassemble(char *output, uint8_t *buffer, options_t *options, uint16_t *pc) {
     char        opcode_repr[256], hex_dump[256];
@@ -458,15 +467,6 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
 
     opcode_repr[0] = '\0';
     hex_dump[0] = '\0';
-
-#define HEXDUMP_APPLE_0() if (options->apple2_output) { sprintf(hex_dump, "%04X:"              , current_addr                                                         ); } else
-#define HEXDUMP_APPLE_1() if (options->apple2_output) { sprintf(hex_dump, "%04X:%02X        "  , current_addr, opcode                                                 ); } else
-#define HEXDUMP_APPLE_2() if (options->apple2_output) { sprintf(hex_dump, "%04X:%02X %02X    " , current_addr, opcode, byte_operand                                   ); } else
-#define HEXDUMP_APPLE_3() if (options->apple2_output) { sprintf(hex_dump, "%04X:%02X %02X %02X", current_addr, opcode, LOW_PART(word_operand), HIGH_PART(word_operand)); } else
-
-#define HEXDUMP_NES_1() sprintf(hex_dump, "$%04X> %02X:"         , current_addr, opcode);
-#define HEXDUMP_NES_2() sprintf(hex_dump, "$%04X> %02X %02X:"    , current_addr, opcode, byte_operand);
-#define HEXDUMP_NES_3() sprintf(hex_dump, "$%04X> %02X %02X%02X:", current_addr, opcode, LOW_PART(word_operand), HIGH_PART(word_operand));
 
     // Set hex dump to default single address format. Will be overwritten
     // by more complex output in case of hex dump mode enabled
