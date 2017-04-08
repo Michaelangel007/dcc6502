@@ -84,212 +84,212 @@ typedef struct options_s {
 
 /* Opcode table */
 static opcode_t g_opcode_table[NUMBER_OPCODES] = {
-    {0x69, "ADC", IMMED, 2, 0                        }, /* ADC */
-    {0x65, "ADC", ZEROP, 3, 0                        },
-    {0x75, "ADC", ZEPIX, 4, 0                        },
-    {0x6D, "ADC", ABSOL, 4, 0                        },
-    {0x7D, "ADC", ABSIX, 4, CYCLE_PAGE               },
-    {0x79, "ADC", ABSIY, 4, CYCLE_PAGE               },
-    {0x61, "ADC", INDIN, 6, 0                        },
-    {0x71, "ADC", ININD, 5, CYCLE_PAGE               },
+    {0x69, "ADC", IMMED, 2, 0                        }, /* 69 ADC */
+    {0x65, "ADC", ZEROP, 3, 0                        }, /* 65 ADC */
+    {0x75, "ADC", ZEPIX, 4, 0                        }, /* 75 ADC */
+    {0x6D, "ADC", ABSOL, 4, 0                        }, /* 6D ADC */
+    {0x7D, "ADC", ABSIX, 4, CYCLE_PAGE               }, /* 7D ADC */
+    {0x79, "ADC", ABSIY, 4, CYCLE_PAGE               }, /* 79 ADC */
+    {0x61, "ADC", INDIN, 6, 0                        }, /* 61 ADC */
+    {0x71, "ADC", ININD, 5, CYCLE_PAGE               }, /* 71 ADC */
 
-    {0x29, "AND", IMMED, 2, 0                        }, /* AND */
-    {0x25, "AND", ZEROP, 3, 0                        },
-    {0x35, "AND", ZEPIX, 4, 0                        },
-    {0x2D, "AND", ABSOL, 4, 0                        },
-    {0x3D, "AND", ABSIX, 4, CYCLE_PAGE               },
-    {0x39, "AND", ABSIY, 4, CYCLE_PAGE               },
-    {0x21, "AND", INDIN, 6, 0                        },
-    {0x31, "AND", ININD, 5, CYCLE_PAGE               },
+    {0x29, "AND", IMMED, 2, 0                        }, /* 29 AND */
+    {0x25, "AND", ZEROP, 3, 0                        }, /* 25 AND */
+    {0x35, "AND", ZEPIX, 4, 0                        }, /* 35 AND */
+    {0x2D, "AND", ABSOL, 4, 0                        }, /* 2D AND */
+    {0x3D, "AND", ABSIX, 4, CYCLE_PAGE               }, /* 3D AND */
+    {0x39, "AND", ABSIY, 4, CYCLE_PAGE               }, /* 39 AND */
+    {0x21, "AND", INDIN, 6, 0                        }, /* 21 AND */
+    {0x31, "AND", ININD, 5, CYCLE_PAGE               }, /* 31 AND */
 
-    {0x0A, "ASL", ACCUM, 2, 0                        }, /* ASL */
-    {0x06, "ASL", ZEROP, 5, 0                        },
-    {0x16, "ASL", ZEPIX, 6, 0                        },
-    {0x0E, "ASL", ABSOL, 6, 0                        },
-    {0x1E, "ASL", ABSIX, 7, 0                        },
+    {0x0A, "ASL", ACCUM, 2, 0                        }, /* 0A ASL */
+    {0x06, "ASL", ZEROP, 5, 0                        }, /* 06 ASL */
+    {0x16, "ASL", ZEPIX, 6, 0                        }, /* 16 ASL */
+    {0x0E, "ASL", ABSOL, 6, 0                        }, /* 0E ASL */
+    {0x1E, "ASL", ABSIX, 7, 0                        }, /* 1E ASL */
 
-    {0x90, "BCC", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* BCC */
+    {0x90, "BCC", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 90 BCC */
 
-    {0xB0, "BCS", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* BCS */
+    {0xB0, "BCS", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* B0 BCS */
 
-    {0xF0, "BEQ", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* BEQ */
+    {0xF0, "BEQ", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* F0 BEQ */
 
-    {0x24, "BIT", ZEROP, 3, 0                        }, /* BIT */
-    {0x2C, "BIT", ABSOL, 4, 0                        },
+    {0x24, "BIT", ZEROP, 3, 0                        }, /* 24 BIT */
+    {0x2C, "BIT", ABSOL, 4, 0                        }, /* 2C BIT */
 
-    {0x30, "BMI", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* BMI */
+    {0x30, "BMI", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 30 BMI */
 
-    {0xD0, "BNE", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* BNE */
+    {0xD0, "BNE", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* D0 BNE */
 
-    {0x10, "BPL", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* BPL */
+    {0x10, "BPL", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 10 BPL */
 
-    {0x00, "BRK", IMPLI, 7, 0                        }, /* BRK */
+    {0x00, "BRK", IMPLI, 7, 0                        }, /* 00 BRK */
 
-    {0x50, "BVC", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* BVC */
+    {0x50, "BVC", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 50 BVC */
 
-    {0x70, "BVS", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* BVS */
+    {0x70, "BVS", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 70 BVS */
 
-    {0x18, "CLC", IMPLI, 2, 0                        }, /* CLC */
+    {0x18, "CLC", IMPLI, 2, 0                        }, /* 18 CLC */
 
-    {0xD8, "CLD", IMPLI, 2, 0                        }, /* CLD */
+    {0xD8, "CLD", IMPLI, 2, 0                        }, /* D8 CLD */
 
-    {0x58, "CLI", IMPLI, 2, 0                        }, /* CLI */
+    {0x58, "CLI", IMPLI, 2, 0                        }, /* 58 CLI */
 
-    {0xB8, "CLV", IMPLI, 2, 0                        }, /* CLV */
+    {0xB8, "CLV", IMPLI, 2, 0                        }, /* B8 CLV */
 
-    {0xC9, "CMP", IMMED, 2, 0                        }, /* CMP */
-    {0xC5, "CMP", ZEROP, 3, 0                        },
-    {0xD5, "CMP", ZEPIX, 4, 0                        },
-    {0xCD, "CMP", ABSOL, 4, 0                        },
-    {0xDD, "CMP", ABSIX, 4, CYCLE_PAGE               },
-    {0xD9, "CMP", ABSIY, 4, CYCLE_PAGE               },
-    {0xC1, "CMP", INDIN, 6, 0                        },
-    {0xD1, "CMP", ININD, 5, CYCLE_PAGE               },
+    {0xC9, "CMP", IMMED, 2, 0                        }, /* C9 CMP */
+    {0xC5, "CMP", ZEROP, 3, 0                        }, /* C5 CMP */
+    {0xD5, "CMP", ZEPIX, 4, 0                        }, /* D5 CMP */
+    {0xCD, "CMP", ABSOL, 4, 0                        }, /* CD CMP */
+    {0xDD, "CMP", ABSIX, 4, CYCLE_PAGE               }, /* DD CMP */
+    {0xD9, "CMP", ABSIY, 4, CYCLE_PAGE               }, /* D9 CMP */
+    {0xC1, "CMP", INDIN, 6, 0                        }, /* C1 CMP */
+    {0xD1, "CMP", ININD, 5, CYCLE_PAGE               }, /* D1 CMP */
 
-    {0xE0, "CPX", IMMED, 2, 0                        }, /* CPX */
-    {0xE4, "CPX", ZEROP, 3, 0                        },
-    {0xEC, "CPX", ABSOL, 4, 0                        },
+    {0xE0, "CPX", IMMED, 2, 0                        }, /* E0 CPX */
+    {0xE4, "CPX", ZEROP, 3, 0                        }, /* E4 CPX */
+    {0xEC, "CPX", ABSOL, 4, 0                        }, /* EC CPX */
 
-    {0xC0, "CPY", IMMED, 2, 0                        }, /* CPY */
-    {0xC4, "CPY", ZEROP, 3, 0                        },
-    {0xCC, "CPY", ABSOL, 4, 0                        },
+    {0xC0, "CPY", IMMED, 2, 0                        }, /* C0 CPY */
+    {0xC4, "CPY", ZEROP, 3, 0                        }, /* C4 CPY */
+    {0xCC, "CPY", ABSOL, 4, 0                        }, /* CC CPY */
 
-    {0xC6, "DEC", ZEROP, 5, 0                        }, /* DEC */
-    {0xD6, "DEC", ZEPIX, 6, 0                        },
-    {0xCE, "DEC", ABSOL, 6, 0                        },
-    {0xDE, "DEC", ABSIX, 7, 0                        },
+    {0xC6, "DEC", ZEROP, 5, 0                        }, /* C6 DEC */
+    {0xD6, "DEC", ZEPIX, 6, 0                        }, /* D6 DEC */
+    {0xCE, "DEC", ABSOL, 6, 0                        }, /* CE DEC */
+    {0xDE, "DEC", ABSIX, 7, 0                        }, /* DE DEC */
 
-    {0xCA, "DEX", IMPLI, 2, 0                        }, /* DEX */
+    {0xCA, "DEX", IMPLI, 2, 0                        }, /* CA DEX */
 
-    {0x88, "DEY", IMPLI, 2, 0                        }, /* DEY */
+    {0x88, "DEY", IMPLI, 2, 0                        }, /* 88 DEY */
 
-    {0x49, "EOR", IMMED, 2, 0                        }, /* EOR */
-    {0x45, "EOR", ZEROP, 3, 0                        },
-    {0x55, "EOR", ZEPIX, 4, 0                        },
-    {0x4D, "EOR", ABSOL, 4, 0                        },
-    {0x5D, "EOR", ABSIX, 4, CYCLE_PAGE               },
-    {0x59, "EOR", ABSIY, 4, CYCLE_PAGE               },
-    {0x41, "EOR", INDIN, 6, 1                        },
-    {0x51, "EOR", ININD, 5, CYCLE_PAGE               },
+    {0x49, "EOR", IMMED, 2, 0                        }, /* 49 EOR */
+    {0x45, "EOR", ZEROP, 3, 0                        }, /* 45 EOR */
+    {0x55, "EOR", ZEPIX, 4, 0                        }, /* 55 EOR */
+    {0x4D, "EOR", ABSOL, 4, 0                        }, /* 4D EOR */
+    {0x5D, "EOR", ABSIX, 4, CYCLE_PAGE               }, /* 5D EOR */
+    {0x59, "EOR", ABSIY, 4, CYCLE_PAGE               }, /* 59 EOR */
+    {0x41, "EOR", INDIN, 6, 1                        }, /* 41 EOR */
+    {0x51, "EOR", ININD, 5, CYCLE_PAGE               }, /* 51 EOR */
 
-    {0xE6, "INC", ZEROP, 5, 0                        }, /* INC */
-    {0xF6, "INC", ZEPIX, 6, 0                        },
-    {0xEE, "INC", ABSOL, 6, 0                        },
-    {0xFE, "INC", ABSIX, 7, 0                        },
+    {0xE6, "INC", ZEROP, 5, 0                        }, /* E6 INC */
+    {0xF6, "INC", ZEPIX, 6, 0                        }, /* F6 INC */
+    {0xEE, "INC", ABSOL, 6, 0                        }, /* EE INC */
+    {0xFE, "INC", ABSIX, 7, 0                        }, /* FE INC */
 
-    {0xE8, "INX", IMPLI, 2, 0                        }, /* INX */
+    {0xE8, "INX", IMPLI, 2, 0                        }, /* E8 INX */
 
-    {0xC8, "INY", IMPLI, 2, 0                        }, /* INY */
+    {0xC8, "INY", IMPLI, 2, 0                        }, /* C8 INY */
 
-    {0x4C, "JMP", ABSOL, 3, 0                        }, /* JMP */
-    {0x6C, "JMP", INDIA, 5, 0                        },
+    {0x4C, "JMP", ABSOL, 3, 0                        }, /* 4C JMP */
+    {0x6C, "JMP", INDIA, 5, 0                        }, /* 6C JMP */
 
-    {0x20, "JSR", ABSOL, 6, 0                        }, /* JSR */
+    {0x20, "JSR", ABSOL, 6, 0                        }, /* 20 JSR */
 
-    {0xA9, "LDA", IMMED, 2, 0                        }, /* LDA */
-    {0xA5, "LDA", ZEROP, 3, 0                        },
-    {0xB5, "LDA", ZEPIX, 4, 0                        },
-    {0xAD, "LDA", ABSOL, 4, 0                        },
-    {0xBD, "LDA", ABSIX, 4, CYCLE_PAGE               },
-    {0xB9, "LDA", ABSIY, 4, CYCLE_PAGE               },
-    {0xA1, "LDA", INDIN, 6, 0                        },
-    {0xB1, "LDA", ININD, 5, CYCLE_PAGE               },
+    {0xA9, "LDA", IMMED, 2, 0                        }, /* A9 LDA */
+    {0xA5, "LDA", ZEROP, 3, 0                        }, /* A5 LDA */
+    {0xB5, "LDA", ZEPIX, 4, 0                        }, /* B5 LDA */
+    {0xAD, "LDA", ABSOL, 4, 0                        }, /* AD LDA */
+    {0xBD, "LDA", ABSIX, 4, CYCLE_PAGE               }, /* BD LDA */
+    {0xB9, "LDA", ABSIY, 4, CYCLE_PAGE               }, /* B9 LDA */
+    {0xA1, "LDA", INDIN, 6, 0                        }, /* A1 LDA */
+    {0xB1, "LDA", ININD, 5, CYCLE_PAGE               }, /* B1 LDA */
 
-    {0xA2, "LDX", IMMED, 2, 0                        }, /* LDX */
-    {0xA6, "LDX", ZEROP, 3, 0                        },
-    {0xB6, "LDX", ZEPIY, 4, 0                        },
-    {0xAE, "LDX", ABSOL, 4, 0                        },
-    {0xBE, "LDX", ABSIY, 4, CYCLE_PAGE               },
+    {0xA2, "LDX", IMMED, 2, 0                        }, /* A2 LDX */
+    {0xA6, "LDX", ZEROP, 3, 0                        }, /* A6 LDX */
+    {0xB6, "LDX", ZEPIY, 4, 0                        }, /* B6 LDX */
+    {0xAE, "LDX", ABSOL, 4, 0                        }, /* AE LDX */
+    {0xBE, "LDX", ABSIY, 4, CYCLE_PAGE               }, /* BE LDX */
 
-    {0xA0, "LDY", IMMED, 2, 0                        }, /* LDY */
-    {0xA4, "LDY", ZEROP, 3, 0                        },
-    {0xB4, "LDY", ZEPIX, 4, 0                        },
-    {0xAC, "LDY", ABSOL, 4, 0                        },
-    {0xBC, "LDY", ABSIX, 4, CYCLE_PAGE               },
+    {0xA0, "LDY", IMMED, 2, 0                        }, /* A0 LDY */
+    {0xA4, "LDY", ZEROP, 3, 0                        }, /* A4 LDY */
+    {0xB4, "LDY", ZEPIX, 4, 0                        }, /* B4 LDY */
+    {0xAC, "LDY", ABSOL, 4, 0                        }, /* AC LDY */
+    {0xBC, "LDY", ABSIX, 4, CYCLE_PAGE               }, /* BC LDY */
 
-    {0x4A, "LSR", ACCUM, 2, 0                        }, /* LSR */
-    {0x46, "LSR", ZEROP, 5, 0                        },
-    {0x56, "LSR", ZEPIX, 6, 0                        },
-    {0x4E, "LSR", ABSOL, 6, 0                        },
-    {0x5E, "LSR", ABSIX, 7, 0                        },
+    {0x4A, "LSR", ACCUM, 2, 0                        }, /* 4A LSR */
+    {0x46, "LSR", ZEROP, 5, 0                        }, /* 46 LSR */
+    {0x56, "LSR", ZEPIX, 6, 0                        }, /* 56 LSR */
+    {0x4E, "LSR", ABSOL, 6, 0                        }, /* 4E LSR */
+    {0x5E, "LSR", ABSIX, 7, 0                        }, /* 5E LSR */
 
-    {0xEA, "NOP", IMPLI, 2, 0                        }, /* NOP */
+    {0xEA, "NOP", IMPLI, 2, 0                        }, /* EA NOP */
 
-    {0x09, "ORA", IMMED, 2, 0                        }, /* ORA */
-    {0x05, "ORA", ZEROP, 3, 0                        },
-    {0x15, "ORA", ZEPIX, 4, 0                        },
-    {0x0D, "ORA", ABSOL, 4, 0                        },
-    {0x1D, "ORA", ABSIX, 4, CYCLE_PAGE               },
-    {0x19, "ORA", ABSIY, 4, CYCLE_PAGE               },
-    {0x01, "ORA", INDIN, 6, 0                        },
-    {0x11, "ORA", ININD, 5, CYCLE_PAGE               },
+    {0x09, "ORA", IMMED, 2, 0                        }, /* 09 ORA */
+    {0x05, "ORA", ZEROP, 3, 0                        }, /* 05 ORA */
+    {0x15, "ORA", ZEPIX, 4, 0                        }, /* 15 ORA */
+    {0x0D, "ORA", ABSOL, 4, 0                        }, /* 0D ORA */
+    {0x1D, "ORA", ABSIX, 4, CYCLE_PAGE               }, /* 1D ORA */
+    {0x19, "ORA", ABSIY, 4, CYCLE_PAGE               }, /* 19 ORA */
+    {0x01, "ORA", INDIN, 6, 0                        }, /* 01 ORA */
+    {0x11, "ORA", ININD, 5, CYCLE_PAGE               }, /* 11 ORA */
 
-    {0x48, "PHA", IMPLI, 3, 0                        }, /* PHA */
+    {0x48, "PHA", IMPLI, 3, 0                        }, /* 48 PHA */
 
-    {0x08, "PHP", IMPLI, 3, 0                        }, /* PHP */
+    {0x08, "PHP", IMPLI, 3, 0                        }, /* 08 PHP */
 
-    {0x68, "PLA", IMPLI, 4, 0                        }, /* PLA */
+    {0x68, "PLA", IMPLI, 4, 0                        }, /* 68 PLA */
 
-    {0x28, "PLP", IMPLI, 4, 0                        }, /* PLP */
+    {0x28, "PLP", IMPLI, 4, 0                        }, /* 28 PLP */
 
-    {0x2A, "ROL", ACCUM, 2, 0                        }, /* ROL */
-    {0x26, "ROL", ZEROP, 5, 0                        },
-    {0x36, "ROL", ZEPIX, 6, 0                        },
-    {0x2E, "ROL", ABSOL, 6, 0                        },
-    {0x3E, "ROL", ABSIX, 7, 0                        },
+    {0x2A, "ROL", ACCUM, 2, 0                        }, /* 2A ROL */
+    {0x26, "ROL", ZEROP, 5, 0                        }, /* 26 ROL */
+    {0x36, "ROL", ZEPIX, 6, 0                        }, /* 36 ROL */
+    {0x2E, "ROL", ABSOL, 6, 0                        }, /* 2E ROL */
+    {0x3E, "ROL", ABSIX, 7, 0                        }, /* 3E ROL */
 
-    {0x6A, "ROR", ACCUM, 2, 0                        }, /* ROR */
-    {0x66, "ROR", ZEROP, 5, 0                        },
-    {0x76, "ROR", ZEPIX, 6, 0                        },
-    {0x6E, "ROR", ABSOL, 6, 0                        },
-    {0x7E, "ROR", ABSIX, 7, 0                        },
+    {0x6A, "ROR", ACCUM, 2, 0                        }, /* 6A ROR */
+    {0x66, "ROR", ZEROP, 5, 0                        }, /* 66 ROR */
+    {0x76, "ROR", ZEPIX, 6, 0                        }, /* 76 ROR */
+    {0x6E, "ROR", ABSOL, 6, 0                        }, /* 6E ROR */
+    {0x7E, "ROR", ABSIX, 7, 0                        }, /* 7E ROR */
 
-    {0x40, "RTI", IMPLI, 6, 0                        }, /* RTI */
+    {0x40, "RTI", IMPLI, 6, 0                        }, /* 40 RTI */
 
-    {0x60, "RTS", IMPLI, 6, 0                        }, /* RTS */
+    {0x60, "RTS", IMPLI, 6, 0                        }, /* 60 RTS */
 
-    {0xE9, "SBC", IMMED, 2, 0                        }, /* SBC */
-    {0xE5, "SBC", ZEROP, 3, 0                        },
-    {0xF5, "SBC", ZEPIX, 4, 0                        },
-    {0xED, "SBC", ABSOL, 4, 0                        },
-    {0xFD, "SBC", ABSIX, 4, CYCLE_PAGE               },
-    {0xF9, "SBC", ABSIY, 4, CYCLE_PAGE               },
-    {0xE1, "SBC", INDIN, 6, 0                        },
-    {0xF1, "SBC", ININD, 5, CYCLE_PAGE               },
+    {0xE9, "SBC", IMMED, 2, 0                        }, /* E9 SBC */
+    {0xE5, "SBC", ZEROP, 3, 0                        }, /* E5 SBC */
+    {0xF5, "SBC", ZEPIX, 4, 0                        }, /* F5 SBC */
+    {0xED, "SBC", ABSOL, 4, 0                        }, /* ED SBC */
+    {0xFD, "SBC", ABSIX, 4, CYCLE_PAGE               }, /* FD SBC */
+    {0xF9, "SBC", ABSIY, 4, CYCLE_PAGE               }, /* F9 SBC */
+    {0xE1, "SBC", INDIN, 6, 0                        }, /* E1 SBC */
+    {0xF1, "SBC", ININD, 5, CYCLE_PAGE               }, /* F1 SBC */
 
-    {0x38, "SEC", IMPLI, 2, 0                        }, /* SEC */
+    {0x38, "SEC", IMPLI, 2, 0                        }, /* 38 SEC */
 
-    {0xF8, "SED", IMPLI, 2, 0                        }, /* SED */
+    {0xF8, "SED", IMPLI, 2, 0                        }, /* F8 SED */
 
-    {0x78, "SEI", IMPLI, 2, 0                        }, /* SEI */
+    {0x78, "SEI", IMPLI, 2, 0                        }, /* 78 SEI */
 
-    {0x85, "STA", ZEROP, 3, 0                        }, /* STA */
-    {0x95, "STA", ZEPIX, 4, 0                        },
-    {0x8D, "STA", ABSOL, 4, 0                        },
-    {0x9D, "STA", ABSIX, 4, CYCLE_PAGE               },
-    {0x99, "STA", ABSIY, 4, CYCLE_PAGE               },
-    {0x81, "STA", INDIN, 6, 0                        },
-    {0x91, "STA", ININD, 5, CYCLE_PAGE               },
+    {0x85, "STA", ZEROP, 3, 0                        }, /* 85 STA */
+    {0x95, "STA", ZEPIX, 4, 0                        }, /* 95 STA */
+    {0x8D, "STA", ABSOL, 4, 0                        }, /* 8D STA */
+    {0x9D, "STA", ABSIX, 4, CYCLE_PAGE               }, /* 9D STA */
+    {0x99, "STA", ABSIY, 4, CYCLE_PAGE               }, /* 99 STA */
+    {0x81, "STA", INDIN, 6, 0                        }, /* 81 STA */
+    {0x91, "STA", ININD, 5, CYCLE_PAGE               }, /* 91 STA */
 
-    {0x86, "STX", ZEROP, 3, 0                        }, /* STX */
-    {0x96, "STX", ZEPIY, 4, 0                        },
-    {0x8E, "STX", ABSOL, 4, 0                        },
+    {0x86, "STX", ZEROP, 3, 0                        }, /* 86 STX */
+    {0x96, "STX", ZEPIY, 4, 0                        }, /* 96 STX */
+    {0x8E, "STX", ABSOL, 4, 0                        }, /* 8E STX */
 
-    {0x84, "STY", ZEROP, 3, 0                        }, /* STY */
-    {0x94, "STY", ZEPIX, 4, 0                        },
-    {0x8C, "STY", ABSOL, 4, 0                        },
+    {0x84, "STY", ZEROP, 3, 0                        }, /* 84 STY */
+    {0x94, "STY", ZEPIX, 4, 0                        }, /* 94 STY */
+    {0x8C, "STY", ABSOL, 4, 0                        }, /* 9C STY */
 
-    {0xAA, "TAX", IMPLI, 2, 0                        }, /* TAX */
+    {0xAA, "TAX", IMPLI, 2, 0                        }, /* AA TAX */
 
-    {0xA8, "TAY", IMPLI, 2, 0                        }, /* TAY */
+    {0xA8, "TAY", IMPLI, 2, 0                        }, /* A8 TAY */
 
-    {0xBA, "TSX", IMPLI, 2, 0                        }, /* TSX */
+    {0xBA, "TSX", IMPLI, 2, 0                        }, /* BA TSX */
 
-    {0x8A, "TXA", IMPLI, 2, 0                        }, /* TXA */
+    {0x8A, "TXA", IMPLI, 2, 0                        }, /* 8A TXA */
 
-    {0x9A, "TXS", IMPLI, 2, 0                        }, /* TXS */
+    {0x9A, "TXS", IMPLI, 2, 0                        }, /* 9A TXS */
 
-    {0x98, "TYA", IMPLI, 2, 0                        } /* TYA */
+    {0x98, "TYA", IMPLI, 2, 0                        } /* 98 TYA */
 };
 
 /* This function emits a comment header with information about the file
