@@ -441,9 +441,11 @@ static void append_nes(char *input, uint16_t arg) {
 #define DUMP_FORMAT (options->hex_output ? "%-16s%-16s;" : "%-8s%-16s;")
 #define HIGH_PART(val) (((val) >> 8) & 0xFFu)
 #define LOW_PART(val) ((val) & 0xFFu)
-#define LOAD_WORD(buffer, current_pc) ((uint16_t)buffer[(current_pc) + 1] | (((uint16_t)buffer[(current_pc) + 2]) << 8))
 
-#define HEXDUMP_APPLE_0() if (options->apple2_output) { sprintf(hex_dump, "%04X:"              , current_addr                                                         ); } else
+#define LOAD_BYTE() byte_operand = buffer[*pc]                                     ; *pc += 1;
+#define LOAD_WORD() word_operand = buffer[*pc] | (((uint16_t)buffer[*pc + 1]) << 8); *pc += 2;
+
+#define HEXDUMP_APPLE_0() if (options->apple2_output) { sprintf(hex_dump, "%04X:"              , current_addr                                                        ); } else
 #define HEXDUMP_APPLE_1() if (options->apple2_output) { sprintf(hex_dump, "%04X:%02X        "  , current_addr, opcode                                                 ); } else
 #define HEXDUMP_APPLE_2() if (options->apple2_output) { sprintf(hex_dump, "%04X:%02X %02X    " , current_addr, opcode, byte_operand                                   ); } else
 #define HEXDUMP_APPLE_3() if (options->apple2_output) { sprintf(hex_dump, "%04X:%02X %02X %02X", current_addr, opcode, LOW_PART(word_operand), HIGH_PART(word_operand)); } else
@@ -473,6 +475,8 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
     HEXDUMP_APPLE_0()
     sprintf(hex_dump, "$%04X", current_addr);
 
+    *pc += 1; // Instructions are always at least 1 byte
+
     // For opcode not found, terminate early
     if (!found) {
         sprintf(opcode_repr, ".byte $%02X", opcode);
@@ -488,8 +492,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
     switch (g_opcode_table[opcode].addressing) {
         case IMMED:
             /* Get immediate value operand */
-            byte_operand = buffer[*pc + 1];
-            *pc += 1;
+            LOAD_BYTE()
 
             sprintf(opcode_repr, "%s #$%02X", mnemonic, byte_operand);
             if (options->hex_output) {
@@ -500,8 +503,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
             break;
         case ABSOL:
             /* Get absolute address operand */
-            word_operand = LOAD_WORD(buffer, *pc);
-            *pc += 2;
+            LOAD_WORD()
 
             sprintf(opcode_repr, "%s $%02X%02X", mnemonic, HIGH_PART(word_operand), LOW_PART(word_operand));
             if (options->hex_output) {
@@ -512,8 +514,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
             break;
         case ZEROP:
             /* Get zero page address */
-            byte_operand = buffer[*pc + 1];
-            *pc += 1;
+            LOAD_BYTE()
 
             sprintf(opcode_repr, "%s $%02X", mnemonic, byte_operand);
             if (options->hex_output) {
@@ -532,8 +533,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
             break;
         case INDIA:
             /* Get indirection address */
-            word_operand = LOAD_WORD(buffer, *pc);
-            *pc += 2;
+            LOAD_WORD()
 
             sprintf(opcode_repr, "%s ($%02X%02X)", mnemonic, HIGH_PART(word_operand), LOW_PART(word_operand));
             if (options->hex_output) {
@@ -544,8 +544,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
             break;
         case ABSIX:
             /* Get base address */
-            word_operand = LOAD_WORD(buffer, *pc);
-            *pc += 2;
+            LOAD_WORD()
 
             sprintf(opcode_repr, "%s $%02X%02X,X", mnemonic, HIGH_PART(word_operand), LOW_PART(word_operand));
             if (options->hex_output) {
@@ -556,8 +555,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
             break;
         case ABSIY:
             /* Get baser address */
-            word_operand = LOAD_WORD(buffer, *pc);
-            *pc += 2;
+            LOAD_WORD()
 
             sprintf(opcode_repr, "%s $%02X%02X,Y", mnemonic, HIGH_PART(word_operand), LOW_PART(word_operand));
             if (options->hex_output) {
@@ -568,8 +566,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
             break;
         case ZEPIX:
             /* Get zero-page base address */
-            byte_operand = buffer[*pc + 1];
-            *pc += 1;
+            LOAD_BYTE()
 
             sprintf(opcode_repr, "%s $%02X,X", mnemonic, byte_operand);
             if (options->hex_output) {
@@ -580,8 +577,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
             break;
         case ZEPIY:
             /* Get zero-page base address */
-            byte_operand = buffer[*pc + 1];
-            *pc += 1;
+            LOAD_BYTE()
 
             sprintf(opcode_repr, "%s $%02X,Y", mnemonic, byte_operand);
             if (options->hex_output) {
@@ -592,8 +588,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
             break;
         case INDIN:
             /* Get zero-page base address */
-            byte_operand = buffer[*pc + 1];
-            *pc += 1;
+            LOAD_BYTE()
 
             sprintf(opcode_repr, "%s ($%02X,X)", mnemonic, byte_operand);
             if (options->hex_output) {
@@ -604,8 +599,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
             break;
         case ININD:
             /* Get zero-page base address */
-            byte_operand = buffer[*pc + 1];
-            *pc += 1;
+            LOAD_BYTE()
 
             sprintf(opcode_repr, "%s ($%02X),Y", mnemonic, byte_operand);
             if (options->hex_output) {
@@ -616,8 +610,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
             break;
         case RELAT:
             /* Get relative modifier */
-            byte_operand = buffer[*pc + 1];
-            *pc += 1;
+            LOAD_BYTE()
 
             // Compute displacement from first byte after full instruction.
             word_operand = current_addr + 2;
@@ -849,7 +842,6 @@ int main(int argc, char *argv[]) {
     while((pc <= 0xFFFFu) && ((pc - options.org) < byte_count)) {
         disassemble(tmpstr, buffer, &options, &pc);
         fprintf(stdout, "%s\n", tmpstr);
-        pc++;
     }
 
     free(buffer);
