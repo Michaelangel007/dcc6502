@@ -43,7 +43,7 @@
 #define CYCLE_BRANCH    (1 << 1) // Branch taken, +1 cycle
 #define _65C02          (1 << 2) // 65C02 only instruction
 #define BAD             (1 << 3) // Illegal 6502 instruction
-#define CYCLE_MASK      CYCLE_PAGE | CYCLE_BRANCH;
+#define CYCLE_MASK      (CYCLE_PAGE | CYCLE_BRANCH)
 
 /* The 6502's 13 addressing modes */
 typedef enum {
