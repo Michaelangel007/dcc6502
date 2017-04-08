@@ -412,6 +412,7 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
             /* Found the opcode, record its table index */
             found = 1;
             entry = opcode_idx;
+            break;
         }
     }
 
