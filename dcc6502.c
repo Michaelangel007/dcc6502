@@ -45,18 +45,18 @@
 /* The 6502's 13 addressing modes */
 typedef enum {
     IMMED = 0, /* Immediate */
-    ABSOL, /* Absolute */
-    ZEROP, /* Zero Page */
-    IMPLI, /* Implied */
-    INDIA, /* Indirect Absolute */
-    ABSIX, /* Absolute indexed with X */
-    ABSIY, /* Absolute indexed with Y */
-    ZEPIX, /* Zero page indexed with X */
-    ZEPIY, /* Zero page indexed with Y */
-    INDIN, /* Indexed indirect (with X) */
-    ININD, /* Indirect indexed (with Y) */
-    RELAT, /* Relative */
-    ACCUM /* Accumulator */
+    ABSOL,     /* Absolute */
+    ZEROP,     /* Zero Page */
+    IMPLI,     /* Implied */
+    INDIA,     /* Indirect Absolute */
+    ABSIX,     /* Absolute indexed with X */
+    ABSIY,     /* Absolute indexed with Y */
+    ZEPIX,     /* Zero page indexed with X */
+    ZEPIY,     /* Zero page indexed with Y */
+    INDIN,     /* Indexed indirect (with X) */
+    ININD,     /* Indirect indexed (with Y) */
+    RELAT,     /* Relative */
+    ACCUM      /* Accumulator */
 } addressing_mode_e;
 
 /** Some compilers don't have EOK in errno.h */
@@ -65,21 +65,21 @@ typedef enum {
 #endif
 
 typedef struct opcode_s {
-    uint8_t number; /* Number of the opcode */
-    const char *mnemonic; /* Index in the name table */
-    addressing_mode_e addressing; /* Addressing mode */
-    unsigned int cycles; /* Number of cycles */
-    unsigned int cycles_exceptions; /* Mask of cycle-counting exceptions */
+    uint8_t           number;            /* Number of the opcode */
+    const char       *mnemonic;          /* Index in the name table */
+    addressing_mode_e addressing;        /* Addressing mode */
+    unsigned int      cycles;            /* Number of cycles */
+    unsigned int      cycles_exceptions; /* Mask of cycle-counting exceptions */
 } opcode_t;
 
 typedef struct options_s {
-    char *filename; /* Input filename */
-    int nes_mode; /* 1 if NES commenting and warnings are enabled */
-    int cycle_counting; /* 1 if we want cycle counting */
-    int hex_output; /* 1 if hex dump output is desired at beginning of line */
-    int apple2_output; /* 1 if Apple 2/Atari disassembly output stype */
+    char         *filename;       /* Input filename */
+    int           nes_mode;       /* 1 if NES commenting and warnings are enabled */
+    int           cycle_counting; /* 1 if we want cycle counting */
+    int           hex_output;     /* 1 if hex dump output is desired at beginning of line */
+    int           apple2_output;  /* 1 if Apple 2/Atari disassembly output stype */
     unsigned long max_num_bytes;
-    uint16_t org; /* Origin of addresses */
+    uint16_t      org;            /* Origin of addresses */
 } options_t;
 
 /* Opcode table */
@@ -683,12 +683,12 @@ static void parse_args(int argc, char *argv[], options_t *options) {
     int arg_len;
     unsigned long tmp_value;
 
-    options->apple2_output = 0;
+    options->apple2_output  = 0;
     options->cycle_counting = 0;
-    options->hex_output = 0;
-    options->nes_mode = 0;
-    options->org = 0x8000;
-    options->max_num_bytes = 65536;
+    options->hex_output     = 0;
+    options->nes_mode       = 0;
+    options->org            = 0x8000;
+    options->max_num_bytes  = 65536;
 
     while (arg_idx < argc) {
         /* First non-dash-starting argument is assumed to be filename */
