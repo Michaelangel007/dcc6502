@@ -435,10 +435,9 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
         if (options->hex_output) {
             HEXDUMP_APPLE_1()
             sprintf(hex_dump, "$%04X> %02X:", current_addr, opcode);
-            sprintf(output, "%-16s%-16s; INVALID OPCODE !!!\n", hex_dump, opcode_repr);
-        } else {
-            sprintf(output, "%-8s%-16s; INVALID OPCODE !!!\n", hex_dump, opcode_repr);
         }
+        len = sprintf(output, DUMP_FORMAT, hex_dump, opcode_repr);
+        sprintf( &output[len], "%s", " INVALID OPCODE !!!" );
         return;
     }
 
