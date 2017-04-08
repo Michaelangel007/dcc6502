@@ -424,6 +424,11 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
 #define HEXDUMP_NES_2() sprintf(hex_dump, "$%04X> %02X %02X:"    , current_addr, opcode, byte_operand);
 #define HEXDUMP_NES_3() sprintf(hex_dump, "$%04X> %02X %02X%02X:", current_addr, opcode, LOW_PART(word_operand), HIGH_PART(word_operand));
 
+    // Set hex dump to default single address format. Will be overwritten
+    // by more complex output in case of hex dump mode enabled
+    HEXDUMP_APPLE_0()
+    sprintf(hex_dump, "$%04X", current_addr);
+
     // For opcode not found, terminate early
     if (!found) {
         sprintf(opcode_repr, ".byte $%02X", opcode);
@@ -432,8 +437,6 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
             sprintf(hex_dump, "$%04X> %02X:", current_addr, opcode);
             sprintf(output, "%-16s%-16s; INVALID OPCODE !!!\n", hex_dump, opcode_repr);
         } else {
-            HEXDUMP_APPLE_0()
-            sprintf(hex_dump, "$%04X", current_addr);
             sprintf(output, "%-8s%-16s; INVALID OPCODE !!!\n", hex_dump, opcode_repr);
         }
         return;
@@ -441,11 +444,6 @@ static void disassemble(char *output, uint8_t *buffer, options_t *options, uint1
 
     // Opcode found in table: disassemble properly according to addressing mode
     mnemonic = g_opcode_table[entry].mnemonic;
-
-    // Set hex dump to default single address format. Will be overwritten
-    // by more complex output in case of hex dump mode enabled
-    HEXDUMP_APPLE_0()
-    sprintf(hex_dump, "$%04X", current_addr);
 
     switch (g_opcode_table[entry].addressing) {
         case IMMED:
