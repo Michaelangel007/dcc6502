@@ -744,8 +744,8 @@ static void parse_args(int argc, char *argv[], options_t *options) {
 
         /* Got a switch, process it */
         switch (argv[arg_idx][1]) {
-            case 'h':
             case '?':
+            case 'h':
                 usage_and_exit(0, NULL);
                 break;
             case 'a':
@@ -755,18 +755,23 @@ static void parse_args(int argc, char *argv[], options_t *options) {
                     goto unknown;
                 options->apple2_output = 1;
                 break;
-            case 'n':
-                options->nes_mode = 1;
-                break;
             case 'c':
                 options->cycle_counting = 1;
                 break;
             case 'd':
                 options->hex_output = 1;
                 break;
-            case 'v':
-                version();
-                exit(0);
+            case 'm':
+                if ((arg_idx == (argc - 1)) || (argv[arg_idx + 1][0] == '-')) {
+                    usage_and_exit(1, "Missing argument to -m switch");
+                }
+
+                /* Get argument and parse it */
+                arg_idx++;
+                if (!str_arg_to_ulong(argv[arg_idx], &tmp_value)) {
+                    usage_and_exit(1, "Invalid argument to -m switch");
+                }
+                options->max_num_bytes = tmp_value;
                 break;
             case 'o':
                 if ((arg_idx == (argc - 1)) || (argv[arg_idx + 1][0] == '-')) {
@@ -780,17 +785,12 @@ static void parse_args(int argc, char *argv[], options_t *options) {
                 }
                 options->org = (uint16_t)(tmp_value & 0xFFFFu);
                 break;
-            case 'm':
-                if ((arg_idx == (argc - 1)) || (argv[arg_idx + 1][0] == '-')) {
-                    usage_and_exit(1, "Missing argument to -m switch");
-                }
-
-                /* Get argument and parse it */
-                arg_idx++;
-                if (!str_arg_to_ulong(argv[arg_idx], &tmp_value)) {
-                    usage_and_exit(1, "Invalid argument to -m switch");
-                }
-                options->max_num_bytes = tmp_value;
+            case 'n':
+                options->nes_mode = 1;
+                break;
+            case 'v':
+                version();
+                exit(0);
                 break;
             default:
 unknown:
