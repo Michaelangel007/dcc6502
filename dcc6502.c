@@ -686,14 +686,16 @@ static void usage(void) {
     fprintf(stderr,
 "\n"
 "Usage: dcc6502 [options] FILENAME\n"
-"  -?/-h        : Show this help message\n"
-"  -o ORIGIN    : Set the origin (base address of disassembly) [default: 0x8000]\n"
-"  -m NUM_BYTES : Only disassemble the first NUM_BYTES bytes\n"
-"  -d           : Enable hex dump within disassembly\n"
-"  -n           : Enable NES register annotations\n"
-"  -v           : Get only version information\n"
+"  -?           : Show this help message\n"
+"  -a           : Apple II/Atari style output\n"
+"  -apple\n"
 "  -c           : Enable cycle counting annotations\n"
-"  -a   -apple  : Apple II/Atari style output\n"
+"  -d           : Enable hex dump within disassembly\n"
+"  -h           : Show this help message\n"
+"  -m NUM_BYTES : Only disassemble the first NUM_BYTES bytes\n"
+"  -n           : Enable NES register annotations\n"
+"  -o ORIGIN    : Set the origin (base address of disassembly) [default: 0x8000]\n"
+"  -v           : Get only version information\n"
 "\n"
     );
 }
