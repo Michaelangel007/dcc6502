@@ -312,9 +312,9 @@ static void emit_header(options_t *options, int fsize) {
  */
 static char *append_cycle(char *input, uint8_t entry, uint16_t pc, uint16_t new_pc) {
     char tmpstr[256];
-    int cycles = g_opcode_table[entry].cycles;
-    int exceptions = g_opcode_table[entry].cycles_exceptions;
-    int crosses_page = ((pc & 0xff00u) != (new_pc & 0xff00u)) ? 1 : 0;
+    int  cycles       = g_opcode_table[entry].cycles;
+    int  exceptions   = g_opcode_table[entry].cycles_exceptions;
+    int  crosses_page = ((pc & 0xff00u) != (new_pc & 0xff00u)) ? 1 : 0;
 
     // On some exceptional conditions, instruction will take an extra cycle, or even two
     if (exceptions != 0) {
@@ -392,15 +392,15 @@ static void append_nes(char *input, uint16_t arg) {
 
 /* This function disassembles the opcode at the PC and outputs it in *output */
 static void disassemble(char *output, uint8_t *buffer, options_t *options, uint16_t *pc) {
-    char opcode_repr[256], hex_dump[256];
-    int opcode_idx;
-    int len = 0;
-    int entry = 0;
-    int found = 0;
-    uint8_t byte_operand;
-    uint16_t word_operand = 0;
-    uint16_t current_addr = *pc;
-    uint8_t opcode = buffer[current_addr];
+    char        opcode_repr[256], hex_dump[256];
+    int         opcode_idx;
+    int         len = 0;
+    int         entry = 0;
+    int         found = 0;
+    uint8_t     byte_operand;
+    uint16_t    word_operand = 0;
+    uint16_t    current_addr = *pc;
+    uint8_t     opcode = buffer[current_addr];
     const char *mnemonic;
 
     opcode_repr[0] = '\0';
@@ -642,16 +642,19 @@ static void version(void) {
 }
 
 static void usage(void) {
-    fprintf(stderr, "\nUsage: dcc6502 [options] FILENAME\n");
-    fprintf(stderr, "  -?/-h        : Show this help message\n");
-    fprintf(stderr, "  -o ORIGIN    : Set the origin (base address of disassembly) [default: 0x8000]\n");
-    fprintf(stderr, "  -m NUM_BYTES : Only disassemble the first NUM_BYTES bytes\n");
-    fprintf(stderr, "  -d           : Enable hex dump within disassembly\n");
-    fprintf(stderr, "  -n           : Enable NES register annotations\n");
-    fprintf(stderr, "  -v           : Get only version information\n");
-    fprintf(stderr, "  -c           : Enable cycle counting annotations\n");
-    fprintf(stderr, "  -a   -apple  : Apple II/Atari style output\n");
-    fprintf(stderr, "\n");
+    fprintf(stderr,
+"\n"
+"Usage: dcc6502 [options] FILENAME\n"
+"  -?/-h        : Show this help message\n"
+"  -o ORIGIN    : Set the origin (base address of disassembly) [default: 0x8000]\n"
+"  -m NUM_BYTES : Only disassemble the first NUM_BYTES bytes\n"
+"  -d           : Enable hex dump within disassembly\n"
+"  -n           : Enable NES register annotations\n"
+"  -v           : Get only version information\n"
+"  -c           : Enable cycle counting annotations\n"
+"  -a   -apple  : Apple II/Atari style output\n"
+"\n"
+    );
 }
 
 static int str_arg_to_ulong(char *str, unsigned long *value) {
@@ -765,12 +768,12 @@ unknown:
 }
 
 int main(int argc, char *argv[]) {
-    int byte_count = 0;
-    char tmpstr[512];
-    uint8_t *buffer; /* Memory buffer */
-    FILE *input_file; /* Input file */
-    uint16_t pc; /* Program counter */
-    options_t options; /* Command-line options parsing results */
+    int       byte_count = 0;
+    char      tmpstr[512];
+    uint8_t  *buffer;     /* Memory buffer */
+    FILE     *input_file; /* Input file */
+    uint16_t  pc;         /* Program counter */
+    options_t options;    /* Command-line options parsing results */
 
     parse_args(argc, argv, &options);
 
