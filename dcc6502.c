@@ -88,7 +88,7 @@ typedef struct options_s {        //Default Description
 } options_t;
 
 /* Opcode table */
-static opcode_t g_opcode_table[NUMBER_OPCODES] = {
+static opcode_t g_6502_opcodes[NUMBER_OPCODES] = {
     {"BRK", IMPLI, 7, 0                        }, /* 00 BRK */
     {"ORA", INDIN, 6, 0                        }, /* 01 ORA */
     {"???", 0    , 2, BAD                      }, /* 02     illegal 6502 */
@@ -956,6 +956,7 @@ static void usage(void) {
 "\n"
 "Usage: dcc6502 [options] FILENAME\n"
 "  -?           : Show this help message\n"
+"  -2           : Use 65C02 opcodes\n"
 "  -a           : Apple II/Atari style output\n"
 "  -apple\n"
 "  -b NUM_BYTES : Skip this many bytes of the input file [default: 0x0]\n"
@@ -1026,6 +1027,9 @@ static void parse_args(int argc, char *argv[], options_t *options) {
             case '?':
             case 'h':
                 usage_and_exit(0, NULL);
+                break;
+            case '2':
+                g_opcode_table = g_65C02_opcodes;
                 break;
             case 'a':
                 /* Optional long form */
