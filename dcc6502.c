@@ -229,7 +229,7 @@ static opcode_t g_opcode_table[NUMBER_OPCODES] = {
     {"???", 0    , 2, BAD                      }, /* 89     illegal 6502 */
     {"TXA", IMPLI, 2, 0                        }, /* 8A TXA */
     {"???", 0    , 2, BAD                      }, /* 8B     illegal 6502 */
-    {"STY", ABSOL, 4, 0                        }, /* 9C STY */
+    {"STY", ABSOL, 4, 0                        }, /* 8C STY */
     {"STA", ABSOL, 4, 0                        }, /* 8D STA */
     {"STX", ABSOL, 4, 0                        }, /* 8E STX */
     {"???", 0    , 4, BAD                      }, /* 8F     illegal 6502 */
