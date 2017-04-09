@@ -6,9 +6,45 @@ Disassembler for 6502 processors.
 # Features
 * Simple command-line interface
 * Single file, ANSI C source
-* Annotation for addresses of Nintendo Entertainment System (NES) system registers
-* Cycle-counting output
-* Machine code display inline with the disassembly
+* Annotation for IO addresses of Nintendo Entertainment System (NES) system registers
+* Apple 2 / Atari style output via `-a`
+* Cycle-counting output via `-c`
+* Machine code display inline with the disassembly via `-d`
+* Skip 'n' beginnign bytes of binary via `-b #`
+* Assembly style output via `-s`
+
+
+# Bug Fixes
+
+* Instruction decoding changed from linear O(151) to O(1)
+* Fixed off-by-one file length bug
+  * Zero length files now work properly
+* Fixed reading file one byte at a time to a single read
+* Fixed buffer overflow memory access
+
+
+# HOWTO Build/Compile
+
+Compile via the de-facto make:
+
+```
+    make clean && make all
+```
+
+The included makefile has a bunch of options:
+
+|Option |Effect|
+|:------|:-----|
+|clean  |Delete binary files                        |
+|all    |Build code and binary test files           |
+|help   |Show makefile help options                 |
+|illegal|Build and test illegal 6502 opcodes        |
+|isntall|Build and copy to /opt/local/bin/disasm6502|
+|zero   |Build and test zero-length file            |
+
+NOTE: The binary is installed into `/opt/local/bin/` as `disasm6502`
+in order not to over-write any previous versions of `dcc6502`.
+
 
 # History tidbit
 The original 1.0 version of dcc6502 was written overnight on Christmas eve
