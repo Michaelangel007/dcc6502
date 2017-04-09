@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-O
+CFLAGS=-O -Wall -Wextra
 
 dcc6502: dcc6502.c
 	$(CC) -o $@ $^ $(CFLAGS)
