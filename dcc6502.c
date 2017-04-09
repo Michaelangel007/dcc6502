@@ -35,7 +35,7 @@
 #define AUTHOR "Michael Pohoreski <michaelangel007@sharedcraft.com>"
 #define GIT_LOCATION "https://github.com/Michaelangel007/dcc6502"
 #define FORK_LOCATION "https://github.com/tcarmelveilleux/dcc6502"
-#define VERSION_INFO "v2.3"
+#define VERSION_INFO "v2.4"
 #define NUMBER_OPCODES 256
 
 /* Exceptions for cycle counting */
@@ -80,6 +80,7 @@ typedef struct options_s {
     int           cycle_counting; /* 1 if we want cycle counting */
     int           hex_output;     /* 1 if hex dump output is desired at beginning of line */
     int           apple2_output;  /* 1 if Apple 2/Atari disassembly output stype */
+    unsigned long start_offset;   /*=0     starting offset to read from binary file */
     unsigned long max_num_bytes;  /*=65536 maximum number of bytes to read from binary file */
     int           user_length;    /* 1 if user requested custom (file) length */
     int           omit_opcodes;   /* 1 if address and opcodes should be skipped (left blank) == clean assembly style */
@@ -749,6 +750,7 @@ static void parse_args(int argc, char *argv[], options_t *options) {
     options->omit_opcodes   = 0;
     options->org            = 0x8000;
     options->max_num_bytes  = 65536; // Default to entire file
+    options->start_offset   = 0; // Default to first byte
     options->user_length    = 0; // False=read default 64K, True=user provided num bytes to read
 
     while (arg_idx < argc) {
@@ -858,6 +860,7 @@ int main(int argc, char *argv[]) {
     fseek( input_file, 0, SEEK_END );
     size_t size = ftell( input_file );
     fseek( input_file, 0, SEEK_SET );
+    fseek( input_file, (long int) options.start_offset, SEEK_CUR );
 
     if (size > 0x10000) {
         size = 0x10000;
@@ -867,6 +870,13 @@ int main(int argc, char *argv[]) {
 
     if( !options.user_length )
         options.max_num_bytes = size;
+
+    // If file offset > file length nothing to do
+    if (options.start_offset > size) {
+        fprintf(stderr, "INFORMATION: Starting position > file size.\n");
+        fprintf(stderr, "             Skipping file since nothing to do.\n");
+        return 0;
+    }
 
     // If user offset + user length > (0xFFFF+1) then clamp
     if ((options.org + options.max_num_bytes) > 0x10000) {
