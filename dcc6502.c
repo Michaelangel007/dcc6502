@@ -841,7 +841,7 @@ int main(int argc, char *argv[]) {
 
     parse_args(argc, argv, &options);
 
-    buffer = calloc(1, 65536);
+    buffer = calloc(1, 65536 + 4); // fix array out-of-bounds buffer overflow
     if (NULL == buffer) {
         usage_and_exit(3, "Could not allocate disassembly memory buffer.");
     }
