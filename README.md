@@ -71,7 +71,7 @@ The included makefile has a bunch of options:
 |all    |Build code and binary test files           |
 |help   |Show makefile help options                 |
 |illegal|Build and test illegal 6502 opcodes        |
-|isntall|Build and copy to /opt/local/bin/disasm6502|
+|install|Build and copy to /opt/local/bin/disasm6502|
 |zero   |Build and test zero-length file            |
 
 NOTE: The binary is installed into `/opt/local/bin/` as `disasm6502`
