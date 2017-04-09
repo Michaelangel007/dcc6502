@@ -35,7 +35,7 @@
 #define AUTHOR "Michael Pohoreski <michaelangel007@sharedcraft.com>"
 #define GIT_LOCATION "https://github.com/Michaelangel007/dcc6502"
 #define FORK_LOCATION "https://github.com/tcarmelveilleux/dcc6502"
-#define VERSION_INFO "v2.2"
+#define VERSION_INFO "v2.3"
 #define NUMBER_OPCODES 256
 
 /* Exceptions for cycle counting */
