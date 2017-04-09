@@ -697,6 +697,7 @@ static void usage(void) {
 "  -?           : Show this help message\n"
 "  -a           : Apple II/Atari style output\n"
 "  -apple\n"
+"  -b NUM_BYTES : Skip this many bytes of the input file [default: 0x0]\n"
 "  -c           : Enable cycle counting annotations\n"
 "  -d           : Enable hex dump within disassembly\n"
 "  -h           : Show this help message\n"
@@ -771,6 +772,18 @@ static void parse_args(int argc, char *argv[], options_t *options) {
                 if ((arg_len > 1) && (strcmp(&argv[arg_idx][1], "apple") != 0))
                     goto unknown;
                 options->apple2_output = 1;
+                break;
+            case 'b':
+                if ((arg_idx == (argc - 1)) || (argv[arg_idx + 1][0] == '-')) {
+                    usage_and_exit(1, "Missing argument to -b switch");
+                }
+
+                /* Get argument and parse it */
+                arg_idx++;
+                if (!str_arg_to_ulong(argv[arg_idx], &tmp_value)) {
+                    usage_and_exit(1, "Invalid argument to -b switch");
+                }
+                options->start_offset = tmp_value;
                 break;
             case 'c':
                 options->cycle_counting = 1;
@@ -864,35 +877,45 @@ int main(int argc, char *argv[]) {
 
     if (size > 0x10000) {
         size = 0x10000;
-        fprintf(stderr, "WARNING: File size > $10000 (65,536) bytes.\n");
-        fprintf(stderr, "         Clamping to $%05X.\n", (uint32_t) size);
+        fprintf(stderr, ";WARNING: File size > $10000 (65,536) bytes.\n");
+        fprintf(stderr, ";         Clamping to $%05X.\n", (uint32_t) size);
     }
 
-    if( !options.user_length )
+    if (!options.user_length) {
         options.max_num_bytes = size;
+    }
+
+    if ((options.start_offset + options.max_num_bytes) > size) {
+        options.max_num_bytes = size - options.start_offset;
+
+        fprintf(stderr, ";INFORMATION: Starting offset + disassembly length > file size!\n");
+        fprintf(stderr, ";             Clamping disassembly length to $%05X.\n", (uint32_t) options.max_num_bytes);
+    }
 
     // If file offset > file length nothing to do
     if (options.start_offset > size) {
-        fprintf(stderr, "INFORMATION: Starting position > file size.\n");
-        fprintf(stderr, "             Skipping file since nothing to do.\n");
-        return 0;
+        fprintf(stderr, ";INFORMATION: Starting position > file size.\n");
+        fprintf(stderr, ";             Skipping file since nothing to do.\n");
+        options.max_num_bytes = 0;
+        goto done_file;
     }
 
     // If user offset + user length > (0xFFFF+1) then clamp
     if ((options.org + options.max_num_bytes) > 0x10000) {
         options.max_num_bytes = 0x10000 - options.org;
-        fprintf(stderr, "WARNING: Start + Length > $FFFF (65,535) bytes.\n");
-        fprintf(stderr, "         Clamping to $%05X.\n", (uint32_t) options.max_num_bytes );
+        fprintf(stderr, ";WARNING: Start + Length > $FFFF (65,535) bytes.\n");
+        fprintf(stderr, ";         Clamping to $%05X.\n", (uint32_t) options.max_num_bytes );
     }
 
     fread(&buffer[ options.org ], options.max_num_bytes, 1, input_file);
 
+done_file:
     fclose(input_file);
 
     /* Disassemble contents of buffer */
     pc  = options.org;
     end = options.org + options.max_num_bytes;
-    emit_header(&options, options.max_num_bytes);
+    emit_header(&options, size);
 
     while (pc < end) {
         disassemble(tmpstr, buffer, &options, &pc);
