@@ -30,13 +30,14 @@ zero: dcc6502
 	 ./dcc6502 -d zero.bin
 
 help:
-	echo "Makefile options:"
-	echo "                 "
-	echo "clean     Delete binary file"
-	echo "illegal   Test disassembly of bad opcodes"
-	echo "install   Install to /opt/local/bin"
-	echo "help      Show this makefile help options"
-	echo "zero      Test disassembly with zero-length file"
+	@echo "Makefile options:"
+	@echo "================="
+	@echo ""
+	@echo "clean     Delete binary file"
+	@echo "illegal   Test disassembly of bad opcodes"
+	@echo "install   Install to /opt/local/bin"
+	@echo "help      Show this makefile help options"
+	@echo "zero      Test disassembly with zero-length file"
 
 all: dcc6502 zero
 
