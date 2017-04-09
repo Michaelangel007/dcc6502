@@ -80,6 +80,21 @@ in order not to over-write any previous versions of `dcc6502`.
 
 # Bug Fixes
 
+* Cycle Timing
+  * http://nesdev.com/6502_cpu.txt
+  * https://github.com/ramiropolla/mame-ap2k/tree/master/src/emu/cpu/m6502
+
+  Dcc6502 has the following cycle timing bugs that have been fixed in this fork:
+
+|Instruction|Opcode|Bad|Fixed|
+|:----------|:----:|--:|:----|
+| ROL abs,X | 3E   |  7|    6|
+| LSR abs,X | 5E   |  7|    6|
+| ROR abs,X | 7E   |  7|    6|
+| STA (zp),Y| 91   |  5|    6|
+| STA abs,Y | 99   |  4|    5|
+| STA abs,X | 9D   |  4|    5|
+
 * Instruction decoding changed from naive linear O(151) to fast O(1)
 * Fixed off-by-one file length bug
   * Files no longer disassemble one past their length
@@ -87,6 +102,7 @@ in order not to over-write any previous versions of `dcc6502`.
 * Fixed slow reading file one byte at a time to a single, fast, read
 * Fixed buffer overflow memory access
 * Miscellanous code cleanup to make it easy to read
+
 
 # History
 

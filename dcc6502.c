@@ -35,7 +35,7 @@
 #define AUTHOR "Michael Pohoreski <michaelangel007@sharedcraft.com>"
 #define GIT_LOCATION "https://github.com/Michaelangel007/dcc6502"
 #define FORK_LOCATION "https://github.com/tcarmelveilleux/dcc6502"
-#define VERSION_INFO "v2.4"
+#define VERSION_INFO "v2.5"
 #define NUMBER_OPCODES 256
 
 /* Exceptions for cycle counting */
@@ -151,7 +151,7 @@ static opcode_t g_opcode_table[NUMBER_OPCODES] = {
     {"???", 0    , 7, BAD                      }, /* 3B     illegal 6502 */
     {"???", 0    , 4, BAD                      }, /* 3C     illegal 6502 */
     {"AND", ABSIX, 4, CYCLE_PAGE               }, /* 3D AND */
-    {"ROL", ABSIX, 7, 0                        }, /* 3E ROL */
+    {"ROL", ABSIX, 6, 0                        }, /* 3E ROL */
     {"???", 0    , 7, BAD                      }, /* 3F     illegal 6502 */
     {"RTI", IMPLI, 6, 0                        }, /* 40 RTI */
     {"EOR", INDIN, 6, 1                        }, /* 41 EOR */
@@ -183,7 +183,7 @@ static opcode_t g_opcode_table[NUMBER_OPCODES] = {
     {"???", 0    , 7, BAD                      }, /* 5B     illegal 6502 */
     {"???", 0    , 4, BAD                      }, /* 5C     illegal 6502 */
     {"EOR", ABSIX, 4, CYCLE_PAGE               }, /* 5D EOR */
-    {"LSR", ABSIX, 7, 0                        }, /* 5E LSR */
+    {"LSR", ABSIX, 6, 0                        }, /* 5E LSR */
     {"???", 0    , 7, BAD                      }, /* 5F     illegal 6502 */
     {"RTS", IMPLI, 6, 0                        }, /* 60 RTS */
     {"ADC", INDIN, 6, 0                        }, /* 61 ADC */
@@ -215,7 +215,7 @@ static opcode_t g_opcode_table[NUMBER_OPCODES] = {
     {"???", 0    , 7, BAD                      }, /* 7B     illegal 6502 */
     {"???", 0    , 4, BAD                      }, /* 7C     illegal 6502 */
     {"ADC", ABSIX, 4, CYCLE_PAGE               }, /* 7D ADC */
-    {"ROR", ABSIX, 7, 0                        }, /* 7E ROR */
+    {"ROR", ABSIX, 6, 0                        }, /* 7E ROR */
     {"???", 0    , 7, BAD                      }, /* 7F     illegal 6502 */
     {"???", 0    , 2, BAD                      }, /* 80     illegal 6502 */
     {"STA", INDIN, 6, 0                        }, /* 81 STA */
@@ -234,7 +234,7 @@ static opcode_t g_opcode_table[NUMBER_OPCODES] = {
     {"STX", ABSOL, 4, 0                        }, /* 8E STX */
     {"???", 0    , 4, BAD                      }, /* 8F     illegal 6502 */
     {"BCC", RELAT, 2, CYCLE_PAGE | CYCLE_BRANCH}, /* 90 BCC */
-    {"STA", ININD, 5, CYCLE_PAGE               }, /* 91 STA */
+    {"STA", ININD, 6, CYCLE_PAGE               }, /* 91 STA */
     {"???", 0    , 2, BAD                      }, /* 92     illegal 6502 */
     {"???", 0    , 6, BAD                      }, /* 93     illegal 6502 */
     {"STY", ZEPIX, 4, 0                        }, /* 94 STY */
@@ -242,11 +242,11 @@ static opcode_t g_opcode_table[NUMBER_OPCODES] = {
     {"STX", ZEPIY, 4, 0                        }, /* 96 STX */
     {"???", 0    , 4, BAD                      }, /* 97     illegal 6502 */
     {"TYA", IMPLI, 2, 0                        }, /* 98 TYA */
-    {"STA", ABSIY, 4, CYCLE_PAGE               }, /* 99 STA */
+    {"STA", ABSIY, 5, CYCLE_PAGE               }, /* 99 STA */
     {"TXS", IMPLI, 2, 0                        }, /* 9A TXS */
     {"???", 0    , 5, BAD                      }, /* 9B     illegal 6502 */
     {"???", 0    , 5, BAD                      }, /* 9C     illegal 6502 */
-    {"STA", ABSIX, 4, CYCLE_PAGE               }, /* 9D STA */
+    {"STA", ABSIX, 5, CYCLE_PAGE               }, /* 9D STA */
     {"???", 0    , 5, BAD                      }, /* 9E     illegal 6502 */
     {"???", 0    , 5, BAD                      }, /* 9F     illegal 6502 */
     {"LDY", IMMED, 2, 0                        }, /* A0 LDY */
