@@ -749,7 +749,7 @@ static void parse_args(int argc, char *argv[], options_t *options) {
     options->omit_opcodes   = 0;
     options->org            = 0x8000;
     options->max_num_bytes  = 65536; // Default to entire file
-    options->user_length    = 0;
+    options->user_length    = 0; // False=read default 64K, True=user provided num bytes to read
 
     while (arg_idx < argc) {
         /* First non-dash-starting argument is assumed to be filename */
@@ -832,11 +832,11 @@ unknown:
 }
 
 int main(int argc, char *argv[]) {
-    int       byte_count = 0;
     char      tmpstr[512];
     uint8_t  *buffer;     /* Memory buffer */
     FILE     *input_file; /* Input file */
     uint16_t  pc;         /* Program counter */
+    size_t    end;
     options_t options;    /* Command-line options parsing results */
 
     parse_args(argc, argv, &options);
@@ -855,18 +855,36 @@ int main(int argc, char *argv[]) {
         exit(2);
     }
 
-    byte_count = 0;
-    while(!feof(input_file) && ((options.org + byte_count) <= 0xFFFFu) && (byte_count < options.max_num_bytes)) {
-        fread(&buffer[options.org + byte_count], 1, 1, input_file);
-        byte_count++;
+    fseek( input_file, 0, SEEK_END );
+    size_t size = ftell( input_file );
+    fseek( input_file, 0, SEEK_SET );
+
+    if (size > 0x10000) {
+        size = 0x10000;
+        fprintf(stderr, "WARNING: File size > $10000 (65,536) bytes.\n");
+        fprintf(stderr, "         Clamping to $%05X.\n", (uint32_t) size);
     }
+
+    if( !options.user_length )
+        options.max_num_bytes = size;
+
+    // If user offset + user length > (0xFFFF+1) then clamp
+    if ((options.org + options.max_num_bytes) > 0x10000) {
+        options.max_num_bytes = 0x10000 - options.org;
+        fprintf(stderr, "WARNING: Start + Length > $FFFF (65,535) bytes.\n");
+        fprintf(stderr, "         Clamping to $%05X.\n", (uint32_t) options.max_num_bytes );
+    }
+
+    fread(&buffer[ options.org ], options.max_num_bytes, 1, input_file);
 
     fclose(input_file);
 
     /* Disassemble contents of buffer */
-    emit_header(&options, byte_count);
-    pc = options.org;
-    while((pc <= 0xFFFFu) && ((pc - options.org) < byte_count)) {
+    pc  = options.org;
+    end = options.org + options.max_num_bytes;
+    emit_header(&options, options.max_num_bytes);
+
+    while (pc < end) {
         disassemble(tmpstr, buffer, &options, &pc);
         fprintf(stdout, "%s\n", tmpstr);
     }
