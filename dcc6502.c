@@ -74,17 +74,17 @@ typedef struct opcode_s {
     unsigned int      cycles_exceptions; /* Mask of cycle-counting exceptions */
 } opcode_t;
 
-typedef struct options_s {
-    char         *filename;       /* Input filename */
-    int           nes_mode;       /* 1 if NES commenting and warnings are enabled */
-    int           cycle_counting; /* 1 if we want cycle counting */
-    int           hex_output;     /* 1 if hex dump output is desired at beginning of line */
-    int           apple2_output;  /* 1 if Apple 2/Atari disassembly output stype */
-    unsigned long start_offset;   /*=0     starting offset to read from binary file */
-    unsigned long max_num_bytes;  /*=65536 maximum number of bytes to read from binary file */
-    int           user_length;    /* 1 if user requested custom (file) length */
-    int           omit_opcodes;   /* 1 if address and opcodes should be skipped (left blank) == clean assembly style */
-    uint16_t      org;            /* Origin of addresses */
+typedef struct options_s {        //Default Description
+    char         *filename;       /*    n/a binary input filename */
+    int           nes_mode;       /*      0 if NES commenting and warnings are enabled */
+    int           cycle_counting; /*      0 if we want cycle counting */
+    int           hex_output;     /*      0 if hex dump output is desired at beginning of line */
+    int           apple2_output;  /*      0 if Apple 2/Atari disassembly output stype */
+    unsigned long start_offset;   /*      0 starting offset to read from binary file */
+    unsigned long max_num_bytes;  /*  10000 maximum number of bytes to read from binary file */
+    int           user_length;    /*      0 if user requested custom (file) length */
+    int           omit_opcodes;   /*      0 if address and opcodes should be skipped (left blank) == clean assembly style */
+    uint16_t      org;            /*   8000 origin of (disassembly) addresses */
 } options_t;
 
 /* Opcode table */
