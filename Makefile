@@ -39,5 +39,5 @@ help:
 	@echo "help      Show this makefile help options"
 	@echo "zero      Test disassembly with zero-length file"
 
-all: dcc6502 zero
+all: dcc6502 install
 
