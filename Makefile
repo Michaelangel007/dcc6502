@@ -25,7 +25,7 @@ install: dcc6502
 	sudo cp dcc6502 /opt/local/bin/disasm6502
 
 zero: dcc6502
-	@rm           zero.bin
+	@rm        -f zero.bin
 	touch         zero.bin
 	 ./dcc6502 -d zero.bin
 
