@@ -81,6 +81,7 @@ typedef struct options_s {
     int           hex_output;     /* 1 if hex dump output is desired at beginning of line */
     int           apple2_output;  /* 1 if Apple 2/Atari disassembly output stype */
     unsigned long max_num_bytes;
+    int           user_length;    /* 1 if user requested custom (file) length */
     int           omit_opcodes;   /* 1 if address and opcodes should be skipped (left blank) == clean assembly style */
     uint16_t      org;            /* Origin of addresses */
 } options_t;
@@ -748,6 +749,7 @@ static void parse_args(int argc, char *argv[], options_t *options) {
     options->omit_opcodes   = 0;
     options->org            = 0x8000;
     options->max_num_bytes  = 65536;
+    options->user_length    = 0;
 
     while (arg_idx < argc) {
         /* First non-dash-starting argument is assumed to be filename */
@@ -784,7 +786,10 @@ static void parse_args(int argc, char *argv[], options_t *options) {
                 if (!str_arg_to_ulong(argv[arg_idx], &tmp_value)) {
                     usage_and_exit(1, "Invalid argument to -m switch");
                 }
+                if (tmp_value > 0x10000)
+                    tmp_value = 0x10000;
                 options->max_num_bytes = tmp_value;
+                options->user_length   = 1;
                 break;
             case 'o':
                 if ((arg_idx == (argc - 1)) || (argv[arg_idx + 1][0] == '-')) {
